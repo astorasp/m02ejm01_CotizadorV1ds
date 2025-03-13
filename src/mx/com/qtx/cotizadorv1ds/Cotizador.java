@@ -4,16 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cotizador {
-    private float porcentajePrecioAgregado = 20.0f;
-    
-    private int cantMinDesctoA = 3;
-    private int cantMaxDesctoA = 5;
-    private float descuentoA = 6.0f;
-    
-    private int cantMinDesctoB = 6;
-    private int cantMaxDesctoB = 999999;
-    private float descuentoB = 10.0f;
-    
     private List<Componente> componentes = new ArrayList<>();
     private List<Integer> cantidades = new ArrayList<>();
 
@@ -33,7 +23,7 @@ public class Cotizador {
     }
 
     // Métodos de cálculo de precios (ejemplo básico)
-    public BigDecimal calcularPrecioPromocion3X2(int partes, Componente componente) {
+/*    public BigDecimal calcularPrecioPromocion3X2(int partes, Componente componente) {
         // Obtener el precio base del componente
         BigDecimal precioBase = componente.getPrecioBase();
         
@@ -61,6 +51,7 @@ public class Cotizador {
     public BigDecimal calcularPrecioDefault(Componente componente, int cantidad) {
         return componente.getPrecioBase().multiply(BigDecimal.valueOf(cantidad));
     }
+ */
 
     public void emitirCotizacion() {
         System.out.println("=== Cotización ===");
@@ -71,20 +62,8 @@ public class Cotizador {
         	int cantidadI = this.cantidades.get(i);
         	BigDecimal importeCotizadoI = new BigDecimal(0);
         	
-        	switch(compI.getTipo()) {
-        	case "TarjetaVideo":
-        		importeCotizadoI = this.calcularPrecioPromocion3X2(cantidadI, compI);
-        		break;
-        	case "PC":
-        		importeCotizadoI = this.calcularPrecioComponenteAgregado(cantidadI, compI);
-        		break;
-        	case "Monitor":
-        		importeCotizadoI = this.calcularPrecioConDsctoXCantidad(cantidadI, compI);
-        		break;
-        	default:
-        		importeCotizadoI = new BigDecimal(cantidadI).multiply(compI.getPrecioBase());
-        	}
-        	
+        	importeCotizadoI = compI.cotizar(cantidadI);
+        	        	
             desplegarLineaCotizacion(compI, cantidadI, importeCotizadoI);  
             total = total.add(importeCotizadoI);
         }
@@ -94,24 +73,11 @@ public class Cotizador {
 	private void desplegarLineaCotizacion(Componente compI, int cantidadI, BigDecimal importeCotizadoI) {
 		System.out.println(String.format("%3d",cantidadI) + " " 
 							+ String.format("%-20s", compI.getDescripcion())
-							+ " Tipo " + String.format("%-15s",compI.getTipo())
+//							+ " Tipo " + String.format("%-15s",compI.getTipo())
 							+ " con precio base de $" + String.format("%8.2f",compI.getPrecioBase())
 							+ " cuesta(n) " + String.format("%8.2f",importeCotizadoI));
 	}
     
-    private BigDecimal calcularPrecioConDsctoXCantidad(int cantidadI, Componente compI) {
-    	BigDecimal precioConDscto = new BigDecimal(0);
-    	precioConDscto = compI.getPrecioBase().multiply(new BigDecimal(cantidadI));
-    	if(cantidadI >= this.cantMinDesctoA && cantidadI <= this.cantMaxDesctoA) {
-    		precioConDscto = precioConDscto.multiply(new BigDecimal(1 - (this.descuentoA/100)));
-    	}
-    	else
-    	if(cantidadI >= this.cantMinDesctoB && cantidadI <= this.cantMaxDesctoB) {
-    		precioConDscto = precioConDscto.multiply(new BigDecimal(1 - (this.descuentoB/100)));    		
-    	}
-		return precioConDscto;
-	}
-
 	public void listarComponentes() {
         System.out.println("=== Componentes a cotizar ===");
         for(int i=0; i<this.cantidades.size();i++) {
@@ -122,7 +88,5 @@ public class Cotizador {
     }
 
     // Getters y Setters
-    public float getPorcentajePrecioAgregado() { return porcentajePrecioAgregado; }
-    public void setPorcentajePrecioAgregado(float porcentaje) { this.porcentajePrecioAgregado = porcentaje; }
 
 }
