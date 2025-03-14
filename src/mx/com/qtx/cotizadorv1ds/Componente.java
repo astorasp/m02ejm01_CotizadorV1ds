@@ -1,7 +1,5 @@
 package mx.com.qtx.cotizadorv1ds;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Componente {
     protected String id;
@@ -14,8 +12,6 @@ public class Componente {
     // Constructor
     public Componente(String id, String descripcion, String marca, String modelo, 
                      BigDecimal costo, BigDecimal precioBase) {
-    	
-    	
         this.id = id;
         this.descripcion = descripcion;
         this.marca = marca;
@@ -23,8 +19,7 @@ public class Componente {
         this.costo = costo;
         this.precioBase = precioBase;
     }
-    
-
+ 
     // Getters y Setters
     public String getId() { return id; }
     public void setId(String id) { this.id = id; }
@@ -60,7 +55,6 @@ public class Componente {
     public BigDecimal calcularUtilidad() {
         return precioBase.subtract(costo);
     }
-
 
 	public BigDecimal cotizar(int cantidadI) {
 		return this.precioBase.multiply(new BigDecimal(cantidadI));
