@@ -19,5 +19,11 @@ public class DiscoDuro extends Componente {
 		this.capacidadAlm = capacidadAlm;
 	}
 
+	@Override
+	public void mostrarCaracteristicas() {
+		super.mostrarCaracteristicas();
+		System.out.println("Capacidad de Almacenamiento: " + capacidadAlm);
+	}
+
 	
 }

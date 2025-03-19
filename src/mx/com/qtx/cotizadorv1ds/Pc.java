@@ -41,4 +41,12 @@ public class Pc extends Componente {
         }
         return costoPc;
     }
+
+    @Override
+    public void mostrarCaracteristicas() {
+        super.mostrarCaracteristicas();
+        for (Componente c : this.subComponentes) {
+        	c.mostrarCaracteristicas();
+        }
+    }
 }
