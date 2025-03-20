@@ -9,9 +9,10 @@ public class DetalleCotizacion {
 	private int cantidad;
 	private BigDecimal precioBase;
 	private BigDecimal importeCotizado;
+	private String categoria;
 	
 	public DetalleCotizacion(int numDetalle, String idComponente, String descripcion, int cantidad,
-			BigDecimal precioBase, BigDecimal importeCotizado) {
+			BigDecimal precioBase, BigDecimal importeCotizado, String categoria) {
 		super();
 		this.numDetalle = numDetalle;
 		this.idComponente = idComponente;
@@ -19,6 +20,7 @@ public class DetalleCotizacion {
 		this.cantidad = cantidad;
 		this.precioBase = precioBase;
 		this.importeCotizado = importeCotizado;
+		this.categoria = categoria;
 	}
 
 	public int getNumDetalle() {
@@ -67,6 +69,14 @@ public class DetalleCotizacion {
 
 	public void setImporteCotizado(BigDecimal importeCotizado) {
 		this.importeCotizado = importeCotizado;
+	}
+
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 
 	

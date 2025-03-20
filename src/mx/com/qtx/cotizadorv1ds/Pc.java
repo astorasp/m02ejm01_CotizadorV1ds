@@ -41,4 +41,9 @@ public class Pc extends Componente {
         }
         return costoPc;
     }
+
+	@Override
+	public String getCategoria() {
+		return "PC";
+	}
 }

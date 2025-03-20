@@ -62,6 +62,7 @@ public class Cotizacion {
 	
 	private void desplegarLineaCotizacion(DetalleCotizacion detI) {
 		System.out.println(String.format("%3d",detI.getCantidad()) + " " 
+							+ String.format("Categoría:%-20s", detI.getCategoria()) 
 							+ String.format("%-20s", detI.getDescripcion())
 							+ " con precio base de $" + String.format("%8.2f",detI.getPrecioBase())
 							+ " cuesta(n) " + String.format("%8.2f",detI.getImporteCotizado()));

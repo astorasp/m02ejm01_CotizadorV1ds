@@ -10,7 +10,14 @@ public class CotizadorTest {
 //    	testEliminarComponente();
     	
     	testGenerarCotizacion();
+//    	testMostrarCaracteristicas();
     }
+
+	private static void testMostrarCaracteristicas() {
+    	Componente disco1 = new DiscoDuro("D001", "Disco Seagate", "TechXYZ", "X200", 
+                new BigDecimal("1880.00"), new BigDecimal("2000.00"), "1TB");   
+		disco1.mostrarCaracteristicas();
+	}
 
 	private static void testCreacionPC() {
     	Componente disco1 = new DiscoDuro("D001", "Disco Seagate", "TechXYZ", "X200", 

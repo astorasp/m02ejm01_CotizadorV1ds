@@ -1,7 +1,7 @@
 package mx.com.qtx.cotizadorv1ds;
 import java.math.BigDecimal;
 
-public class Componente {
+public abstract class Componente {
     protected String id;
     protected String descripcion;
     protected String marca;
@@ -59,4 +59,6 @@ public class Componente {
 	public BigDecimal cotizar(int cantidadI) {
 		return this.precioBase.multiply(new BigDecimal(cantidadI));
 	}
+
+	public abstract String getCategoria();
 }

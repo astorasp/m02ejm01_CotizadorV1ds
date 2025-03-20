@@ -19,5 +19,16 @@ public class DiscoDuro extends Componente {
 		this.capacidadAlm = capacidadAlm;
 	}
 
+	@Override
+	public void mostrarCaracteristicas() {
+		super.mostrarCaracteristicas();
+        System.out.println("Capacidad almacenamiento: " + this.capacidadAlm);
+		
+	}
+
+	@Override
+	public String getCategoria() {
+		return "Disco Duro";
+	}
 	
 }

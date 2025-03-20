@@ -19,4 +19,9 @@ public class Monitor extends Componente {
 		return PromocionUtil.calcularPrecioPromocionDsctoXcant(cantidadI, this.precioBase, mapDsctos);
 	}
 
+	@Override
+	public String getCategoria() {
+		return "Monitor";
+	}
+
 }

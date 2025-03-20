@@ -22,5 +22,10 @@ public class TarjetaVideo extends Componente {
 	public BigDecimal cotizar(int cantidadI) {
 		return PromocionUtil.calcularPrecioPromocion3X2(cantidadI, this.precioBase);
 	}
+
+	@Override
+	public String getCategoria() {
+		return "Tarjeta de Video";
+	}
 	
 }
