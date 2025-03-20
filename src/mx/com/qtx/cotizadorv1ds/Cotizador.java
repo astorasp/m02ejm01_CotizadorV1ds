@@ -3,6 +3,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import mx.com.qtx.cotizadorv1ds.componentes.Componente;
+
 public class Cotizador {
     private List<Componente> componentes = new ArrayList<>();
     private List<Integer> cantidades = new ArrayList<>();

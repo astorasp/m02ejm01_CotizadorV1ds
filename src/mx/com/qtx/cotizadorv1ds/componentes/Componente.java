@@ -1,7 +1,8 @@
-package mx.com.qtx.cotizadorv1ds;
+package mx.com.qtx.cotizadorv1ds.componentes;
 import java.math.BigDecimal;
+import java.util.List;
 
-public class Componente {
+public abstract class Componente {
     protected String id;
     protected String descripcion;
     protected String marca;
@@ -9,8 +10,10 @@ public class Componente {
     protected BigDecimal costo;
     protected BigDecimal precioBase;
     
+
+    protected Componente(){}
     // Constructor
-    public Componente(String id, String descripcion, String marca, String modelo, 
+    public Componente(String id, String descripcion, String marca, String modelo,
                      BigDecimal costo, BigDecimal precioBase) {
         this.id = id;
         this.descripcion = descripcion;
@@ -39,6 +42,7 @@ public class Componente {
     public BigDecimal getPrecioBase() { return precioBase; }
     public void setPrecioBase(BigDecimal precioBase) { this.precioBase = precioBase; }
 
+    public abstract String getCategoria();
 
 	// Métodos
     public void mostrarCaracteristicas() { //¿Como despliega una pc?
@@ -48,6 +52,7 @@ public class Componente {
         System.out.println("Modelo: " + modelo);
         System.out.println("Costo: $" + costo);
         System.out.println("Precio Base: $" + precioBase);
+        System.out.println("Categoria: " + getCategoria());
         System.out.println("Utilidad: " + this.calcularUtilidad());
         
     }
@@ -59,4 +64,26 @@ public class Componente {
 	public BigDecimal cotizar(int cantidadI) {
 		return this.precioBase.multiply(new BigDecimal(cantidadI));
 	}
+
+    public static Componente crearPC(String id, String descripcion, String marca, String modelo, 
+        List<Componente> subComponentes)
+    {
+        return new Pc(id, descripcion, marca, modelo, subComponentes);
+    }
+    public static Componente crearMonitor(String id, String descripcion, String marca, 
+        String modelo, BigDecimal costo,BigDecimal precioBase)
+    {
+        return new Monitor(id, descripcion, marca, modelo, costo, precioBase);
+    }
+    public static Componente crearTarjetaVideo(String id, String descripcion, String marca, 
+        String modelo, BigDecimal costo,BigDecimal precioBase, String memoria)
+    {
+        return new TarjetaVideo(id, descripcion, marca, modelo, costo, precioBase, memoria  );
+    }
+    public static Componente crearDiscoDuro(String id, String descripcion, String marca, 
+    String modelo, BigDecimal costo,BigDecimal precioBase, String capacidadAlm)
+    {
+        return new DiscoDuro(id, descripcion, marca, modelo, costo, precioBase, capacidadAlm);
+    }
+        
 }

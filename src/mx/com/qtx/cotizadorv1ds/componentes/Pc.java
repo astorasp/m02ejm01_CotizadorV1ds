@@ -1,4 +1,4 @@
-package mx.com.qtx.cotizadorv1ds;
+package mx.com.qtx.cotizadorv1ds.componentes;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -49,4 +49,9 @@ public class Pc extends Componente {
         	c.mostrarCaracteristicas();
         }
     }
+
+	@Override
+	public String getCategoria() {
+		return "PC";
+	}
 }

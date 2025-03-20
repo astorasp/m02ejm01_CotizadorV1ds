@@ -1,11 +1,15 @@
-package mx.com.qtx.cotizadorv1ds;
+package mx.com.qtx.cotizadorv1ds.componentes;
 
 import java.math.BigDecimal;
+
+import mx.com.qtx.cotizadorv1ds.PromocionUtil;
 
 public class TarjetaVideo extends Componente {
 	private String memoria;
 
-	public TarjetaVideo(String id, String descripcion, String marca, String modelo, BigDecimal costo,
+	private TarjetaVideo(){super();}
+
+	protected TarjetaVideo(String id, String descripcion, String marca, String modelo, BigDecimal costo,
 			BigDecimal precioBase, String memoria) {
 		super(id, descripcion, marca, modelo, costo, precioBase);
 		this.memoria = memoria;
@@ -27,6 +31,11 @@ public class TarjetaVideo extends Componente {
 	public void mostrarCaracteristicas() {
 		super.mostrarCaracteristicas();
 		System.out.println("Memoria: " + memoria);
+	}
+
+	@Override
+	public String getCategoria() {
+		return "Tarjeta de Video";
 	}
 
 }
