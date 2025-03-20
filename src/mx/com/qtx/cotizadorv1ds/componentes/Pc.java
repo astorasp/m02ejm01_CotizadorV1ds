@@ -1,4 +1,4 @@
-package mx.com.qtx.cotizadorv1ds;
+package mx.com.qtx.cotizadorv1ds.componentes;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -7,7 +7,7 @@ public class Pc extends Componente {
 	private List<Componente> subComponentes;
 	private static final float DSCTO_PRECIO_AGREGADO = 20.0f;
 
-	public Pc(String id, String descripcion, String marca, String modelo, 
+	protected Pc(String id, String descripcion, String marca, String modelo, 
 			List<Componente> subComponentes) {
 		super(id, descripcion, marca, modelo, new BigDecimal(0), new BigDecimal(0));
 		this.subComponentes = subComponentes;

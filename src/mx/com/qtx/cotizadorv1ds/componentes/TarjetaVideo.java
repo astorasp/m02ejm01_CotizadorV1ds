@@ -1,11 +1,11 @@
-package mx.com.qtx.cotizadorv1ds;
+package mx.com.qtx.cotizadorv1ds.componentes;
 
 import java.math.BigDecimal;
 
 public class TarjetaVideo extends Componente {
 	private String memoria;
 
-	public TarjetaVideo(String id, String descripcion, String marca, String modelo, BigDecimal costo,
+	protected TarjetaVideo(String id, String descripcion, String marca, String modelo, BigDecimal costo,
 			BigDecimal precioBase, String memoria) {
 		super(id, descripcion, marca, modelo, costo, precioBase);
 		this.memoria = memoria;

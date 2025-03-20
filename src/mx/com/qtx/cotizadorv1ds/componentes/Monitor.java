@@ -1,4 +1,4 @@
-package mx.com.qtx.cotizadorv1ds;
+package mx.com.qtx.cotizadorv1ds.componentes;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -10,7 +10,7 @@ public class Monitor extends Componente {
 														   6, 10.0,
 														   9, 12.0);
 
-	public Monitor(String id, String descripcion, String marca, String modelo, BigDecimal costo,
+	protected Monitor(String id, String descripcion, String marca, String modelo, BigDecimal costo,
 			BigDecimal precioBase) {
 		super(id, descripcion, marca, modelo, costo, precioBase);
 	}

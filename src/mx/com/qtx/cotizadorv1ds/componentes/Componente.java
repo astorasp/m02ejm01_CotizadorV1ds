@@ -1,5 +1,6 @@
-package mx.com.qtx.cotizadorv1ds;
+package mx.com.qtx.cotizadorv1ds.componentes;
 import java.math.BigDecimal;
+import java.util.List;
 
 public abstract class Componente {
     protected String id;
@@ -61,4 +62,26 @@ public abstract class Componente {
 	}
 
 	public abstract String getCategoria();
+	
+	public static Componente crearDiscoDuro(String id, String descripcion, String marca, String modelo, BigDecimal costo,
+			BigDecimal precioBase, String capacidadAlm) {
+		
+		return new DiscoDuro(id,descripcion,marca,modelo,costo,precioBase,capacidadAlm);
+	}
+	
+	public static Componente crearMonitor(String id, String descripcion, String marca, String modelo, BigDecimal costo,
+			BigDecimal precioBase) {
+		return new Monitor(id,descripcion, marca, modelo, costo,precioBase);
+	}
+
+	public static Componente crearTarjetaVideo(String id, String descripcion, String marca, String modelo, BigDecimal costo,
+			BigDecimal precioBase, String memoria) {
+		return new TarjetaVideo(id, descripcion, marca, modelo, costo,
+				precioBase, memoria);
+	}
+
+	public static Componente crearPc(String id, String descripcion, String marca, String modelo, 
+			List<Componente> subComponentes) {
+		return new Pc(id, descripcion, marca, modelo, subComponentes);
+	}
 }
