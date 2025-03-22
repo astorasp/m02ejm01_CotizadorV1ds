@@ -21,9 +21,9 @@ public class PcBuilder {
     List<Componente> monitores;
     List<Componente> discos; 
     List<Componente> tarjetaVideo;
-    private static final int maxMonitores = 1;
-    private static final int maxDiscos = 2;
-    private static final int maxTarjetasVideo = 1;
+    private static final int MAX_MONITORES = 1;
+    private static final int MAX_DISCOS = 2;
+    private static final int MAX_TARJETAS_VIDEO = 1;
 
     public PcBuilder() {
         this.monitores = new ArrayList<>();
@@ -62,20 +62,29 @@ public class PcBuilder {
     }
 
     public PcBuilder agregarMonitor(Componente monitor) {
-        if(this.monitores.size() < PcBuilder.maxMonitores && monitor instanceof Monitor) {
+        if(this.monitores.size() < MAX_MONITORES && monitor instanceof Monitor) {
             this.monitores.add(monitor);
+        }
+        else {
+            throw new IllegalArgumentException("No se puede agregar más monitores");
         }
         return this;
     }
     public PcBuilder agregarDiscoDuro(Componente disco) {
-        if(this.discos.size() < PcBuilder.maxDiscos && disco instanceof DiscoDuro) {
+        if(this.discos.size() < MAX_DISCOS && disco instanceof DiscoDuro) {
             this.discos.add(disco);
+        }
+        else{
+            throw new IllegalArgumentException("No se puede agregar más discos");
         }
         return this;
     }
     public PcBuilder agregarTarjetaVideo(Componente tarjetaVideo) {
-        if(this.tarjetaVideo.size() < PcBuilder.maxTarjetasVideo && tarjetaVideo instanceof TarjetaVideo) {
+        if(this.tarjetaVideo.size() < MAX_TARJETAS_VIDEO && tarjetaVideo instanceof TarjetaVideo) {
             this.tarjetaVideo.add(tarjetaVideo);
+        }
+        else{
+            throw new IllegalArgumentException("No se puede agregar más tarjetas de video");
         }
         return this;
     }

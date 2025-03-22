@@ -2,6 +2,8 @@ package mx.com.qtx.cotizadorv1ds.componentes;
 import java.math.BigDecimal;
 import java.util.List;
 
+import mx.com.qtx.cotizadorv1ds.PcBuilder;
+
 public abstract class Componente {
     protected String id;
     protected String descripcion;
@@ -81,9 +83,12 @@ public abstract class Componente {
         return new TarjetaVideo(id, descripcion, marca, modelo, costo, precioBase, memoria  );
     }
     public static Componente crearDiscoDuro(String id, String descripcion, String marca, 
-    String modelo, BigDecimal costo,BigDecimal precioBase, String capacidadAlm)
+        String modelo, BigDecimal costo,BigDecimal precioBase, String capacidadAlmacenamiento)
     {
         return new DiscoDuro(id, descripcion, marca, modelo, costo, precioBase, capacidadAlm);
+    }
+    public static PcBuilder getPcBuilder() {
+        return new PcBuilder();
     }
         
 }
