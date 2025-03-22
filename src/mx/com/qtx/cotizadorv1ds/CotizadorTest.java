@@ -7,11 +7,7 @@ import mx.com.qtx.cotizadorv1ds.componentes.Pc;
 
 public class CotizadorTest {
     public static void main(String[] args) {
-//    	testCreacionPC();
-    	
-//    	testAgregarComponentes();
-//    	testEliminarComponente();
-    	
+    	//testCreacionPC();
     	testGenerarCotizacion();
     }
 
@@ -22,9 +18,17 @@ public class CotizadorTest {
                 new BigDecimal("3200.00"), new BigDecimal("6000.00"));   
         Componente tarjeta = Componente.crearTarjetaVideo("C001", "Tarjeta XYZ", "TechBrand", "X200", 
                 new BigDecimal("150.00"), new BigDecimal("200.00"), "16GB");
-        
-    	Componente miPc = new Pc("pc0001", "Laptop 15000 s300", "Dell", "Terminator",
-    											List.of(disco1,monitor,tarjeta));
+        PcBuilder pcBuilder = new PcBuilder();
+        Componente miPc = new PcBuilder().setId("pc0001")
+			.setDescripcion("Laptop 15000 s300")
+			.setMarca("Dell")
+			.setModelo("Terminator")
+			.setCosto(new BigDecimal("1000.00"))
+			.setPrecioBase(new BigDecimal("1500.00"))
+			.agregarDiscoDuro(disco1)
+			.agregarMonitor(monitor)
+			.agregarTarjetaVideo(tarjeta)
+		.build();
 		miPc.mostrarCaracteristicas();
 		
 	}
@@ -56,8 +60,16 @@ public class CotizadorTest {
 	    Componente tarjetaPc = Componente.crearTarjetaVideo("C001", "Tarjeta XYZ", "TechBrand", "X200", 
 	            new BigDecimal("150.00"), new BigDecimal("200.00"), "16GB");
 	    
-		Componente miPc = new Pc("pc0001", "Laptop 15000 s300", "Dell", "Terminator",
-												List.of(discoPc,monitorPc,tarjetaPc));
+		Componente miPc = new PcBuilder().setId("pc0001")
+			.setDescripcion("Laptop 15000 s300")
+			.setMarca("Dell")
+			.setModelo("Terminator")
+			.setCosto(new BigDecimal("1000.00"))
+			.setPrecioBase(new BigDecimal("1500.00"))
+			.agregarDiscoDuro(discoPc)
+			.agregarMonitor(monitorPc)
+			.agregarTarjetaVideo(tarjetaPc)
+			.build();
 		cotizador.agregarComponente(1, miPc);
 		Cotizacion cotizacion = cotizador.generarCotizacion();
 		cotizacion.emitirComoReporte();

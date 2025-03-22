@@ -54,4 +54,18 @@ public class Pc extends Componente {
 	public String getCategoria() {
 		return "PC";
 	}
+
+	public static Componente crearDiscoDuro(String id, String descripcion, String marca, String modelo, BigDecimal precioBase, BigDecimal costo, String capacidadAlm) {
+		return new DiscoDuro(id, descripcion, marca, modelo, precioBase, costo, capacidadAlm);
+	}
+
+	public static Componente crearMonitor(String id, String descripcion, String marca, String modelo, 
+		BigDecimal precioBase, BigDecimal costo) {
+		return new Monitor(id, descripcion, marca, modelo, precioBase, costo);
+	}
+
+	public static Componente crearTarjetaVideo(String id, String descripcion, 
+		String marca, String modelo, BigDecimal precioBase, BigDecimal costo, String memoria) {
+		return new TarjetaVideo(id, descripcion, marca, modelo, precioBase, costo, memoria);
+	}
 }
