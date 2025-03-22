@@ -7,8 +7,8 @@ import mx.com.qtx.cotizadorv1ds.componentes.Pc;
 
 public class CotizadorTest {
     public static void main(String[] args) {
-    	//testCreacionPC();
-    	testGenerarCotizacion();
+    	testCreacionPC();
+    	//testGenerarCotizacion();
     }
 
 	private static void testCreacionPC() {

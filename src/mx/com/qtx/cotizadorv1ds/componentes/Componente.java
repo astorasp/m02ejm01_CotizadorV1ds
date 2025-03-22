@@ -83,7 +83,7 @@ public abstract class Componente {
         return new TarjetaVideo(id, descripcion, marca, modelo, costo, precioBase, memoria  );
     }
     public static Componente crearDiscoDuro(String id, String descripcion, String marca, 
-        String modelo, BigDecimal costo,BigDecimal precioBase, String capacidadAlmacenamiento)
+        String modelo, BigDecimal costo,BigDecimal precioBase, String capacidadAlm)
     {
         return new DiscoDuro(id, descripcion, marca, modelo, costo, precioBase, capacidadAlm);
     }
