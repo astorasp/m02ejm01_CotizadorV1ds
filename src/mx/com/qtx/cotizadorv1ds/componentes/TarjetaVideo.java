@@ -2,7 +2,7 @@ package mx.com.qtx.cotizadorv1ds.componentes;
 
 import java.math.BigDecimal;
 
-public class TarjetaVideo extends Componente {
+public class TarjetaVideo extends ComponenteSimple {
 	private String memoria;
 
 	protected TarjetaVideo(String id, String descripcion, String marca, String modelo, BigDecimal costo,

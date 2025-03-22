@@ -2,7 +2,7 @@ package mx.com.qtx.cotizadorv1ds.componentes;
 
 import java.math.BigDecimal;
 
-public class DiscoDuro extends Componente {
+public class DiscoDuro extends ComponenteSimple {
 	private String capacidadAlm;
 
 	protected DiscoDuro(String id, String descripcion, String marca, String modelo, BigDecimal costo,

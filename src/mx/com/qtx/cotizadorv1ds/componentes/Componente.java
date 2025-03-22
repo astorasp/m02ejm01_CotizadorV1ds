@@ -44,13 +44,14 @@ public abstract class Componente {
 	// Métodos
     public void mostrarCaracteristicas() { //¿Como despliega una pc?
         System.out.println("ID: " + id);
+        System.out.println("Categoría: " + this.getCategoria());
         System.out.println("Descripción: " + descripcion);
         System.out.println("Marca: " + marca);
         System.out.println("Modelo: " + modelo);
         System.out.println("Costo: $" + costo);
         System.out.println("Precio Base: $" + precioBase);
         System.out.println("Utilidad: " + this.calcularUtilidad());
-        
+               
     }
 
     public BigDecimal calcularUtilidad() {
@@ -82,6 +83,22 @@ public abstract class Componente {
 
 	public static Componente crearPc(String id, String descripcion, String marca, String modelo, 
 			List<Componente> subComponentes) {
-		return new Pc(id, descripcion, marca, modelo, subComponentes);
+		List<ComponenteSimple> lstDispositivos = subComponentes.stream()
+				                                          .filter(cmpI->(cmpI instanceof ComponenteSimple))
+		                                                  .map(dispI -> (ComponenteSimple) dispI)
+		                                                  .toList();
+		return new Pc(id, descripcion, marca, modelo, lstDispositivos);
 	}
+	
+	public static PcBuilder getPcBuilder() {
+		return new PcBuilder();
+	}
+
+	@Override
+	public String toString() {
+		return "Componente [id=" + id + ", descripcion=" + descripcion + ", marca=" + marca + ", modelo=" + modelo
+				+ ", costo=" + costo + ", precioBase=" + precioBase + "]";
+	}
+	
+	
 }

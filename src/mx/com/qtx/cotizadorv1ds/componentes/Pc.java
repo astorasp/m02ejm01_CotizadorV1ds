@@ -1,20 +1,35 @@
 package mx.com.qtx.cotizadorv1ds.componentes;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pc extends Componente {
-	private List<Componente> subComponentes;
+	private List<ComponenteSimple> subComponentes;
 	private static final float DSCTO_PRECIO_AGREGADO = 20.0f;
 
 	protected Pc(String id, String descripcion, String marca, String modelo, 
-			List<Componente> subComponentes) {
+			List<ComponenteSimple> subComponentes) {
 		super(id, descripcion, marca, modelo, new BigDecimal(0), new BigDecimal(0));
 		this.subComponentes = subComponentes;
 		this.setPrecioBase(this.calcularPrecioComponenteAgregado(0));
 		this.setCosto(this.calcularCostoComponenteAgregado(0));
 	}
 	
+	protected Pc(PcBuilder config) {
+		super(config.getIdPc(), config.getDescripcionPc(), 
+			  config.getMarcaPc(), config.getModeloPc(), new BigDecimal(0), new BigDecimal(0));
+		
+		List<ComponenteSimple> lstDispositivosPc = new ArrayList<>();
+		lstDispositivosPc.addAll(config.getDiscos());
+		lstDispositivosPc.addAll(config.getMonitores());
+		lstDispositivosPc.addAll(config.getTarjetas());
+		
+		this.subComponentes = lstDispositivosPc;
+		this.setPrecioBase(this.calcularPrecioComponenteAgregado(0));
+		this.setCosto(this.calcularCostoComponenteAgregado(0));
+	}
+
 	@Override
 	public BigDecimal cotizar(int cantidadI) {
 		return this.calcularPrecioComponenteAgregado(cantidadI);
@@ -45,5 +60,26 @@ public class Pc extends Componente {
 	@Override
 	public String getCategoria() {
 		return "PC";
+	}
+	
+	@Override
+	public void mostrarCaracteristicas() {
+		super.mostrarCaracteristicas();
+		System.out.println("\n==== Disco(s) ====");
+		this.subComponentes.stream()
+		                   .filter(scI->scI instanceof DiscoDuro)
+		                   .forEach(dscI-> { dscI.mostrarCaracteristicas(); 
+		                   		             System.out.println();
+		                   		             });
+		System.out.println("==== Monitor(es) ====");
+		this.subComponentes.stream()
+		                   .filter(scI->scI instanceof Monitor)
+		                   .forEach(monI-> { monI.mostrarCaracteristicas(); 
+		                   		             System.out.println();});
+		System.out.println("==== Tarjeta(s) de Video ====");
+		this.subComponentes.stream()
+		                   .filter(scI->scI instanceof Monitor)
+		                   .forEach(tarI-> { tarI.mostrarCaracteristicas(); 
+		                   		             System.out.println();});
 	}
 }

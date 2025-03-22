@@ -3,7 +3,7 @@ package mx.com.qtx.cotizadorv1ds.componentes;
 import java.math.BigDecimal;
 import java.util.Map;
 
-public class Monitor extends Componente {
+public class Monitor extends ComponenteSimple {
 	
 	private static Map<Integer, Double> mapDsctos = Map.of(0,  0.0,
 														   3,  5.0,
