@@ -13,7 +13,7 @@ public abstract class Componente {
 
     protected Componente(){}
     // Constructor
-    public Componente(String id, String descripcion, String marca, String modelo,
+    protected Componente(String id, String descripcion, String marca, String modelo,
                      BigDecimal costo, BigDecimal precioBase) {
         this.id = id;
         this.descripcion = descripcion;

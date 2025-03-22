@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import mx.com.qtx.cotizadorv1ds.componentes.Componente;
+import mx.com.qtx.cotizadorv1ds.componentes.DiscoDuro;
+import mx.com.qtx.cotizadorv1ds.componentes.Monitor;
 import mx.com.qtx.cotizadorv1ds.componentes.Pc;
+import mx.com.qtx.cotizadorv1ds.componentes.TarjetaVideo;
 
 public class PcBuilder {
     private String id;
@@ -59,19 +62,19 @@ public class PcBuilder {
     }
 
     public PcBuilder agregarMonitor(Componente monitor) {
-        if(this.monitores.size() < PcBuilder.maxMonitores) {
+        if(this.monitores.size() < PcBuilder.maxMonitores && monitor instanceof Monitor) {
             this.monitores.add(monitor);
         }
         return this;
     }
     public PcBuilder agregarDiscoDuro(Componente disco) {
-        if(this.discos.size() < PcBuilder.maxDiscos) {
+        if(this.discos.size() < PcBuilder.maxDiscos && disco instanceof DiscoDuro) {
             this.discos.add(disco);
         }
         return this;
     }
     public PcBuilder agregarTarjetaVideo(Componente tarjetaVideo) {
-        if(this.tarjetaVideo.size() < PcBuilder.maxTarjetasVideo) {
+        if(this.tarjetaVideo.size() < PcBuilder.maxTarjetasVideo && tarjetaVideo instanceof TarjetaVideo) {
             this.tarjetaVideo.add(tarjetaVideo);
         }
         return this;
