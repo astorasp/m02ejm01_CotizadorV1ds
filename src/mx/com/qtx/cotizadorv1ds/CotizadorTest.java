@@ -18,7 +18,6 @@ public class CotizadorTest {
                 new BigDecimal("3200.00"), new BigDecimal("6000.00"));   
         Componente tarjeta = Componente.crearTarjetaVideo("C001", "Tarjeta XYZ", "TechBrand", "X200", 
                 new BigDecimal("150.00"), new BigDecimal("200.00"), "16GB");
-        PcBuilder pcBuilder = new PcBuilder();
         Componente miPc = new PcBuilder().setId("pc0001")
 			.setDescripcion("Laptop 15000 s300")
 			.setMarca("Dell")
