@@ -20,59 +20,59 @@ public class PcBuilder {
 	private String marcaPc;
 	private String modeloPc;
 	
-	protected static int getMinMonitores() {
+	static int getMinMonitores() {
 		return MIN_MONITORES;
 	}
 
-	protected static int getMaxMonitores() {
+	static int getMaxMonitores() {
 		return MAX_MONITORES;
 	}
 
-	protected List<Monitor> getMonitores() {
+	List<Monitor> getMonitores() {
 		return monitores;
 	}
 
-	protected static int getMinTarjetas() {
+	static int getMinTarjetas() {
 		return MIN_TARJETAS;
 	}
 
-	protected static int getMaxTarjetas() {
+	static int getMaxTarjetas() {
 		return MAX_TARJETAS;
 	}
 
-	protected List<TarjetaVideo> getTarjetas() {
+	List<TarjetaVideo> getTarjetas() {
 		return tarjetas;
 	}
 
-	protected static int getMinDiscos() {
+	static int getMinDiscos() {
 		return MIN_DISCOS;
 	}
 
-	protected static int getMaxDiscos() {
+	static int getMaxDiscos() {
 		return MAX_DISCOS;
 	}
 
-	protected List<DiscoDuro> getDiscos() {
+	List<DiscoDuro> getDiscos() {
 		return discos;
 	}
 
-	protected String getIdPc() {
+	String getIdPc() {
 		return idPc;
 	}
 
-	protected String getDescripcionPc() {
+	String getDescripcionPc() {
 		return descripcionPc;
 	}
 
-	protected String getMarcaPc() {
+	String getMarcaPc() {
 		return marcaPc;
 	}
 
-	protected String getModeloPc() {
+	String getModeloPc() {
 		return modeloPc;
 	}
 
-	protected PcBuilder() {
+	PcBuilder() {
 		super();
 		this.discos = new ArrayList<>();
 		this.tarjetas = new ArrayList<>();

@@ -5,7 +5,7 @@ import java.util.List;
 
 import mx.com.qtx.cotizadorv1ds.componentes.Componente;
 
-public class Cotizador {
+public class Cotizador implements ICotizador{
     private List<Componente> componentes = new ArrayList<>();
     private List<Integer> cantidades = new ArrayList<>();
 

@@ -11,10 +11,10 @@ public class CotizadorTest {
 //    	testAgregarComponentes();
 //    	testEliminarComponente();
     	
-//    	testGenerarCotizacion();
+    	testGenerarCotizacion();
 //    	testMostrarCaracteristicas();
     	
-    	testCreacionPcOk_conPcBuilder();
+//    	testCreacionPcOk_conPcBuilder();
 //    	testCreacionPcErroneo_conPcBuilder_DiscosDeMas();
 //    	testCreacionPcErroneo_conPcBuilder_SinDiscos();
     }
@@ -100,7 +100,8 @@ public class CotizadorTest {
 	}
 
 	private static void testGenerarCotizacion() {
-		Cotizador cotizador = new Cotizador();
+		
+		ICotizador cotizador = getCotizadorActual();
 		
 		Componente monitor = Componente.crearMonitor("M001","Monitor 17 pulgadas","Samsung","Goliat-500",
 						new BigDecimal(1000), new BigDecimal(2000));
@@ -131,6 +132,11 @@ public class CotizadorTest {
 		cotizador.agregarComponente(1, miPc);
 		Cotizacion cotizacion = cotizador.generarCotizacion();
 		cotizacion.emitirComoReporte();
+	}
+
+	private static ICotizador getCotizadorActual() {
+//		return new Cotizador();
+		return new CotizadorConMap();
 	}
 
 }
