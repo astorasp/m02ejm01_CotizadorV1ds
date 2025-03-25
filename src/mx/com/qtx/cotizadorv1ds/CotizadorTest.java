@@ -7,8 +7,8 @@ import mx.com.qtx.cotizadorv1ds.componentes.Pc;
 
 public class CotizadorTest {
     public static void main(String[] args) {
-    	testCreacionPC();
-    	//testGenerarCotizacion();
+    	//testCreacionPC();
+    	testGenerarCotizacion();
     }
 
 	private static void testCreacionPC() {
@@ -34,7 +34,7 @@ public class CotizadorTest {
 	}
 	
 	private static void testGenerarCotizacion() {
-		Cotizador cotizador = new Cotizador();
+		ICotizador cotizador = new CotizadorConMap();
 		
 		Componente monitor = Componente.crearMonitor("M001","Monitor 17 pulgadas","Samsung","Goliat-500",
 						new BigDecimal(1000), new BigDecimal(2000));

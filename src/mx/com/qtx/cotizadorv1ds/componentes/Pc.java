@@ -41,13 +41,26 @@ public class Pc extends Componente {
         return costoPc;
     }
 
-    @Override
-    public void mostrarCaracteristicas() {
-        super.mostrarCaracteristicas();
-        for (Componente c : this.subComponentes) {
-        	c.mostrarCaracteristicas();
-        }
-    }
+	@Override
+	public void mostrarCaracteristicas() {
+		super.mostrarCaracteristicas();
+		System.out.println("\n==== Disco(s) ====");
+		this.subComponentes.stream()
+		                   .filter(scI->scI instanceof DiscoDuro)
+		                   .forEach(dscI-> { dscI.mostrarCaracteristicas(); 
+		                   		             System.out.println();
+		                   		             });
+		System.out.println("==== Monitor(es) ====");
+		this.subComponentes.stream()
+		                   .filter(scI->scI instanceof Monitor)
+		                   .forEach(monI-> { monI.mostrarCaracteristicas(); 
+		                   		             System.out.println();});
+		System.out.println("==== Tarjeta(s) de Video ====");
+		this.subComponentes.stream()
+		                   .filter(scI->scI instanceof Monitor)
+		                   .forEach(tarI-> { tarI.mostrarCaracteristicas(); 
+		                   		             System.out.println();});
+	}
 
 	@Override
 	public String getCategoria() {
