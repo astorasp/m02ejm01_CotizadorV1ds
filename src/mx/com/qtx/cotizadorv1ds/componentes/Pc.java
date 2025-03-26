@@ -30,9 +30,21 @@ public class Pc extends Componente {
 		this.setCosto(this.calcularCostoComponenteAgregado(0));
 	}
 
+//	@Override
+//	public BigDecimal cotizar(int cantidadI) {
+//		return this.calcularPrecioComponenteAgregado(cantidadI);
+//	}
+	
 	@Override
-	public BigDecimal cotizar(int cantidadI) {
-		return this.calcularPrecioComponenteAgregado(cantidadI);
+	public BigDecimal getPrecioBase() {
+        BigDecimal total = BigDecimal.ZERO;
+        for (Componente c : this.subComponentes) {
+        	if(c == null)
+        		continue;
+            total = total.add(c.getPrecioBase());
+        }
+        return total.multiply( new BigDecimal(1).subtract( new BigDecimal(DSCTO_PRECIO_AGREGADO).divide(new BigDecimal(100)) )
+	             );
 	}
 	
     private BigDecimal calcularPrecioComponenteAgregado(int cantidadI) {
@@ -42,8 +54,10 @@ public class Pc extends Componente {
         		continue;
             total = total.add(c.getPrecioBase());
         }
-//        return total.multiply(BigDecimal.valueOf(1 - (DSCTO_PRECIO_AGREGADO / 100)));
-        return total.multiply( new BigDecimal(1).subtract( new BigDecimal(DSCTO_PRECIO_AGREGADO).divide(new BigDecimal(100)) )
+//      return total.multiply(BigDecimal.valueOf(1 - (DSCTO_PRECIO_AGREGADO / 100)));
+        return total.multiply( new BigDecimal(1)
+        		                   .subtract( new BigDecimal(DSCTO_PRECIO_AGREGADO)
+        		                		          .divide(new BigDecimal(100)) )
         		             );
     }
 	

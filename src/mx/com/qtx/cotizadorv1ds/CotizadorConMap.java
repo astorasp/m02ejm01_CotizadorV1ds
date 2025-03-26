@@ -36,7 +36,7 @@ public class CotizadorConMap implements ICotizador {
 	public Cotizacion generarCotizacion() {
         BigDecimal total = new BigDecimal(0);
         
-        Cotizacion cotizacion = new Cotizacion();
+        Cotizacion cotizacion = new CotizacionFmtoB();
         int i=0;
         for(Componente compI:this.mapCompsYcants.keySet()) {
         	int cantidadI = this.mapCompsYcants.get(compI);
@@ -45,7 +45,7 @@ public class CotizadorConMap implements ICotizador {
         	
         	importeCotizadoI = compI.cotizar(cantidadI);
         	        
-        	DetalleCotizacion detI = new DetalleCotizacion((i + 1), compI.getId(), compI.getDescripcion(), cantidadI, 
+        	DetalleCotizacion detI = new DetalleCotizacion((i), compI.getId(), compI.getDescripcion(), cantidadI, 
         			                                        compI.getPrecioBase(), importeCotizadoI, compI.getCategoria());
         	cotizacion.agregarDetalle(detI);
             total = total.add(importeCotizadoI);
