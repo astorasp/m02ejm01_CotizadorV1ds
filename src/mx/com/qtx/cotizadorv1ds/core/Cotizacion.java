@@ -1,4 +1,4 @@
-package mx.com.qtx.cotizadorv1ds;
+package mx.com.qtx.cotizadorv1ds.core;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,9 +1,12 @@
-package mx.com.qtx.cotizadorv1ds;
+package mx.com.qtx.cotizadorv1ds.cotizadorA;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import mx.com.qtx.cotizadorv1ds.componentes.Componente;
+import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
+import mx.com.qtx.cotizadorv1ds.core.DetalleCotizacion;
+import mx.com.qtx.cotizadorv1ds.core.ICotizador;
+import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
 
 public class Cotizador implements ICotizador{
     private List<Componente> componentes = new ArrayList<>();

@@ -1,4 +1,4 @@
-package mx.com.qtx.cotizadorv1ds.componentes;
+package mx.com.qtx.cotizadorv1ds.core.componentes;
 import java.math.BigDecimal;
 import java.util.List;
 

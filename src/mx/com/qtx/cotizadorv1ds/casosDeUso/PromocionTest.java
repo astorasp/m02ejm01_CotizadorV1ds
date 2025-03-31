@@ -1,14 +1,19 @@
-package mx.com.qtx.cotizadorv1ds.promos;
+package mx.com.qtx.cotizadorv1ds.casosDeUso;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import mx.com.qtx.cotizadorv1ds.Cotizacion;
-import mx.com.qtx.cotizadorv1ds.Cotizador;
-import mx.com.qtx.cotizadorv1ds.CotizadorConMap;
-import mx.com.qtx.cotizadorv1ds.ICotizador;
-import mx.com.qtx.cotizadorv1ds.componentes.Componente;
+import mx.com.qtx.cotizadorv1ds.config.Config;
+import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
+import mx.com.qtx.cotizadorv1ds.core.ICotizador;
+import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
+import mx.com.qtx.cotizadorv1ds.promos.PromDsctoPlano;
+import mx.com.qtx.cotizadorv1ds.promos.PromDsctoXcantidad;
+import mx.com.qtx.cotizadorv1ds.promos.PromNXM;
+import mx.com.qtx.cotizadorv1ds.promos.PromSinDescto;
+import mx.com.qtx.cotizadorv1ds.promos.Promocion;
+import mx.com.qtx.cotizadorv1ds.promos.PromocionBuilder;
 
 public class PromocionTest {
 	private static Map<Integer, Double> mapDsctos = Map.of(0,  0.0,
@@ -115,8 +120,7 @@ public class PromocionTest {
 	}
 
 	private static ICotizador getCotizadorActual() {
-//		return new Cotizador();
-		return new CotizadorConMap();
+		return Config.getCotizador();
 	}
 
 }

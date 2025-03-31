@@ -1,8 +1,12 @@
-package mx.com.qtx.cotizadorv1ds;
+package mx.com.qtx.cotizadorv1ds.casosDeUso;
+
 import java.math.BigDecimal;
 import java.util.List;
 
-import mx.com.qtx.cotizadorv1ds.componentes.Componente;
+import mx.com.qtx.cotizadorv1ds.config.Config;
+import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
+import mx.com.qtx.cotizadorv1ds.core.ICotizador;
+import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
 
 public class CotizadorTest {
     public static void main(String[] args) {
@@ -135,8 +139,7 @@ public class CotizadorTest {
 	}
 
 	private static ICotizador getCotizadorActual() {
-//		return new Cotizador();
-		return new CotizadorConMap();
+		return Config.getCotizador();
 	}
 
 }

@@ -1,11 +1,13 @@
-package mx.com.qtx.cotizadorv1ds;
+package mx.com.qtx.cotizadorv1ds.cotizadorB;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
-import mx.com.qtx.cotizadorv1ds.componentes.Componente;
+import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
+import mx.com.qtx.cotizadorv1ds.core.DetalleCotizacion;
+import mx.com.qtx.cotizadorv1ds.core.ICotizador;
+import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
 
 public class CotizadorConMap implements ICotizador {
 	private Map<Componente,Integer> mapCompsYcants;

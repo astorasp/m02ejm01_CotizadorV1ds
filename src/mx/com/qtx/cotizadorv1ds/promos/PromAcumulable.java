@@ -1,7 +1,5 @@
 package mx.com.qtx.cotizadorv1ds.promos;
 
-import java.math.BigDecimal;
-
 /**
  * @author hp835
  * @version 1.0
