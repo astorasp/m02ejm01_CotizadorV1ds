@@ -1,13 +1,10 @@
 package mx.com.qtx.cotizadorv1ds.config;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.jar.JarEntry;
@@ -33,126 +30,189 @@ public class Config {
 			return null;
 		}
 	}
-	
-    static List<Class<?>> buscarImplementacionesDe(Class<?> interfaceClass, String nomPaquete) {
-        List<Class<?>> lstImplementaciones = new ArrayList<>();
-        String pathPaquete = nomPaquete.replace('.', '/');
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 
-        try {
-            // Iterar sobre todos los recursos del classpath para el paquete
-            for (URL resourceI : Collections.list(classLoader.getResources(pathPaquete))) {
-                try {
-                	mostrarRecurso(resourceI);
-                    File file = new File(resourceI.toURI());
-                    
-                    // Verificar si es un directorio válido
-                    if (file.isDirectory()) {
-                        buscarImplementsEnDirRecursivamente(file, nomPaquete, interfaceClass, lstImplementaciones, classLoader);
-                    }
-                } catch (
-                		IllegalArgumentException| URISyntaxException e) {
-                    // Manejar recursos que no son directorios (ej. JARs) o URIs inválidas
-                    System.err.println("No se pudo procesar el recurso: " + resourceI);
-                    e.printStackTrace();
+    static List<Class<?>> buscarImplementacionesDe(Class<?> interfaceBuscada, String nomPaquete) {
+        List<Class<?>> lstImplementaciones = new ArrayList<>();
+        String rutaPaquete = nomPaquete.replace('.', '/');
+        
+        String[] classpathEntries = System.getProperty("java.class.path")
+        		                          .split(File.pathSeparator);
+        
+        for (String entradaClassPathI:classpathEntries) {
+        	
+             	mostrarRecurso(entradaClassPathI);
+             	
+            	if(entradaClassPathI.endsWith(".jar")) {
+            		processJarResource(entradaClassPathI, rutaPaquete, interfaceBuscada, lstImplementaciones);
+            	}
+            	else {
+                    buscarImplementsEnDirRecursivamente(new File(entradaClassPathI), nomPaquete, interfaceBuscada, lstImplementaciones);
                 }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+         }
         
         return lstImplementaciones;
     }
 
+
+	private static boolean archivoEsUnaClaseJava(File file) {
+		if(file.isFile() == false)
+			return false;
+		
+		return file.getName().endsWith(".class");
+	}
+
     private static void buscarImplementsEnDirRecursivamente(File dirI, String nomPaquete, 
-                                       Class<?> interfaceBuscada, List<Class<?>> lstImplementaciones,
-                                       ClassLoader cargadorClases) {
+                                       Class<?> interfaceBuscada, List<Class<?>> lstImplementaciones) {
     	
-//    	System.out.println("processDirectory(" + dirI.getName() + ", " + nomPaquete + ", " 
-//                                       + interfaceBuscada.getName() + ", " 
-//    			                       + lstImplementaciones.getClass().getName() + ", "
-//    			                       + cargadorClases.getClass());
+//    	System.out.println("buscarImplementsEnDirRecursivamente(" + dirI.getAbsolutePath() + ", " 
+//							    								   + nomPaquete + ", " 
+//							                                       + interfaceBuscada.getName() + ", " 
+//							    			                       + lstImplementaciones.getClass().getName() + ", ");
     	
     	// Recorrer todos los archivos en el directorio
         for (File fileI : dirI.listFiles()) {
             try {
                  
-                if (archivoEsClase(fileI)) {   // Procesar solo archivos .class
-                	String nomArcI = fileI.getName();
-                    agregarClaseSiImplementaInterface(nomPaquete, interfaceBuscada, lstImplementaciones, 
-                    								  cargadorClases, nomArcI);
+                if (archivoEsUnaClaseJava(fileI)) {   // Procesar solo archivos .class
+                	String nomSimpleArcI = fileI.getName();
+                	String paqueteFinal = calcularPaqueteFinal(dirI.getAbsolutePath(), nomPaquete);
+                    agregarClaseSiImplementaInterface(paqueteFinal, interfaceBuscada, lstImplementaciones, nomSimpleArcI);
                 }
                 else 
                 if (fileI.isDirectory()) { // Procesar subdirectorios recursivamente
-                    String subPaquete = nomPaquete + "." + fileI.getName();
-                    buscarImplementsEnDirRecursivamente(fileI, subPaquete, interfaceBuscada, lstImplementaciones, cargadorClases);
+                	String subDir = dirI.getAbsolutePath() + "\\" + fileI.getName();
+                    buscarImplementsEnDirRecursivamente(new File(subDir), nomPaquete, interfaceBuscada, lstImplementaciones);
                 }
                 
             } catch (ClassNotFoundException | NoClassDefFoundError e) {
-                System.err.println("Clase no encontrada: " + fileI.getName());
+                System.err.println("Clase no encontrada: " + fileI.getAbsolutePath());
                 e.printStackTrace();
             }
         }
     }
-
-	private static boolean archivoEsClase(File file) {
-		if(file.isFile() == false)
-			return false;
-		
-		if(file.getName().endsWith(".class") == false)
-			return false;
-		
-		return true;
-	}
+	
 
 	private static void agregarClaseSiImplementaInterface(String nomPaquete, Class<?> interfaceBuscada,
-			List<Class<?>> lstImplementaciones, ClassLoader cargadorClases, String nomArcI) throws ClassNotFoundException {
+			List<Class<?>> lstImplementaciones, String nomSimpleArcI) throws ClassNotFoundException {
+
+//		System.out.println("agregarClaseSiImplementaInterface(" + nomPaquete + ", " + interfaceBuscada.getName() + ", "
+//							+ lstImplementaciones + ", " + nomSimpleArcI + " )");
 		
-		String nomClaseI = nomPaquete + '.' 
-		                 + nomArcI.substring(0, nomArcI.length() - 6);
+		String nomCalifClaseI = nomPaquete + '.' 
+							  + nomSimpleArcI.substring(0, nomSimpleArcI.length() - 6);
 		
-		Class<?> claseI = Class.forName(nomClaseI, false, cargadorClases);
+		Class<?> claseI = Class.forName(nomCalifClaseI);
 		
-		if(claseI.isInterface()) //Si es interface, ignorar
-			return;
-		
-		// Verificar si implementa la interfaz
-		if (interfaceBuscada.isAssignableFrom(claseI)) {
+		if(claseImplementaInterface(interfaceBuscada,claseI)){
 		    lstImplementaciones.add(claseI);
 		}
 	}
-
-	private static void mostrarRecurso(URL resource) {
-		System.out.println("path recurso I:" + resource.getPath());
+	
+	private static void mostrarRecurso(String resource) {
+		System.out.println("path recurso I:" + resource);
 		
 	}
 	
-	private static void processJarResource(URL jarUrl, String packageName, 
-	                                      Class<?> interfaceClass, List<Class<?>> implementations) {
-		
-	    String jarPath = jarUrl.getPath().split("!")[0].replace("file:", "");
-	    String searchPath = packageName.replace('.', '/') + "/";
-	
-	    try (JarFile jar = new JarFile(jarPath)) {
-	        Enumeration<JarEntry> entries = jar.entries();
-	        while (entries.hasMoreElements()) {
-	            JarEntry entry = entries.nextElement();
-	            if (entry.getName().startsWith(searchPath) && entry.getName().endsWith(".class")) {
-	                String className = entry.getName()
-	                    .replace("/", ".")
-	                    .replace(".class", "");
-	                try {
-	                    Class<?> clazz = Class.forName(className);
-	                    if (interfaceClass.isAssignableFrom(clazz) && !clazz.isInterface()) {
-	                        implementations.add(clazz);
-	                    }
-	                } catch (ClassNotFoundException | NoClassDefFoundError e) {
-	                    System.err.println("Error al cargar clase: " + className);
+	private static void processJarResource(String rutaJar, String rutaPaquete, 
+                              Class<?> interfaceBuscada, List<Class<?>> lstImplementaciones) {
+	    try (JarFile jar = new JarFile(rutaJar)) {
+	    	
+	        Enumeration<JarEntry> enumEntradaJar = jar.entries();
+	        while (enumEntradaJar.hasMoreElements()) {
+	            JarEntry itemDelJar = enumEntradaJar.nextElement();
+	            
+	            if (itemJarReferenciaUnaClase(rutaPaquete, itemDelJar)) {
+	                String nomClase = itemDelJar.getName().replace('/', '.')
+	                		                               .replace(".class", "");
+	                Class<?> claseI = Class.forName(nomClase);
+	                if (claseImplementaInterface(interfaceBuscada, claseI)) {
+	                    lstImplementaciones.add(claseI);
 	                }
 	            }
 	        }
-	    } catch (IOException e) {
+	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
+	}
+
+	private static boolean claseImplementaInterface(Class<?> interfaceBuscada, Class<?> claseI) {
+		if(claseI.isInterface())
+			return false;
+		return interfaceBuscada.isAssignableFrom(claseI);
+	}
+
+	private static boolean itemJarReferenciaUnaClase(String rutaPaquete, JarEntry itemDelJar) {
+		String nomItemJar = itemDelJar.getName();
+		
+		if(nomItemJar.startsWith(rutaPaquete) == false)
+			return false;
+		
+		if(nomItemJar.endsWith(".class"))
+			return true;
+		else
+			return false;
 	}	
+	
+	static void buscarRecursoEnClassPath(String rutaRecursoBuscado) {
+		System.out.println("\n=========== Recurso buscado: " + rutaRecursoBuscado + " ===========");
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		String resourcePath = rutaRecursoBuscado; // Ruta a una clase específica
+		URL resourceUrl = classLoader.getResource(resourcePath);
+
+		if (resourceUrl != null) {
+		    System.out.println("Recurso encontrado en: " + resourceUrl);
+		    if (resourceUrl.getProtocol().equals("jar")) {
+		        System.out.println("El recurso está dentro de un JAR.");
+		    }
+		} else {
+		    System.out.println("El recurso no existe en el classpath.");
+		}
+		System.out.println("============================================"
+				+ "==============================================\n");
+	}
+
+    static String calcularPaqueteFinal(String rutaAbsArchivo, String base) {
+        // 1. Convertir el paquete base a segmentos (ej: "a.b.c" → ["a", "b", "c"])
+        String[] segmentosBase = base.split("\\.");
+        
+        // 2. Dividir la ruta en segmentos (ignorando separadores \ o /)
+        String[] segmentosRuta = rutaAbsArchivo.split("[\\\\/]+");
+        
+        // 3. Buscar la posición donde los segmentosBase coinciden en la ruta
+        int inicioCoincidencia = encontrarCoincidencia(segmentosRuta, segmentosBase);
+        
+        if (inicioCoincidencia == -1) {
+            throw new IllegalArgumentException("El paquete base no está contenido en la ruta: " + base);
+        }
+        
+        // 4. Obtener los segmentos restantes después de la coincidencia
+        List<String> restantes = new ArrayList<>();
+        for (int i = inicioCoincidencia + segmentosBase.length; i < segmentosRuta.length; i++) {
+            restantes.add(segmentosRuta[i]);
+        }
+        
+        // 5. Construir el paquete final
+        return restantes.isEmpty() ? 
+               base : 
+               base + "." + String.join(".", restantes);
+    }
+    
+    private static int encontrarCoincidencia(String[] segmentosRuta, String[] segmentosBase) {
+        // Recorre la ruta buscando la secuencia del paquete base
+        for (int i = 0; i <= segmentosRuta.length - segmentosBase.length; i++) {
+            boolean coincide = true;
+            for (int j = 0; j < segmentosBase.length; j++) {
+                if (!segmentosRuta[i + j].equals(segmentosBase[j])) {
+                    coincide = false;
+                    break;
+                }
+            }
+            if (coincide) {
+                return i; // Posición donde empieza la coincidencia
+            }
+        }
+        return -1; // No se encontró
+    }
+	
+	
 }
