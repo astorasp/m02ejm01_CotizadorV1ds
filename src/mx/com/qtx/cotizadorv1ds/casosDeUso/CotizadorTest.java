@@ -13,15 +13,37 @@ public class CotizadorTest {
 //    	testCreacionPC();
     	
 //    	testAgregarComponentes();
-//    	testEliminarComponente();
+    	testEliminarComponente();
     	
-    	testGenerarCotizacion();
+//    	testGenerarCotizacion();
 //    	testMostrarCaracteristicas();
     	
 //    	testCreacionPcOk_conPcBuilder();
 //    	testCreacionPcErroneo_conPcBuilder_DiscosDeMas();
 //    	testCreacionPcErroneo_conPcBuilder_SinDiscos();
     }
+
+	private static void testEliminarComponente() {
+		System.out.println("*** testEliminarComponente ***");
+		ICotizador cotizador = getCotizadorActual();
+		
+		Componente monitor = Componente.crearMonitor("M001","Monitor 17 pulgadas","Samsung","Goliat-500",
+						new BigDecimal(1000), new BigDecimal(2000));
+		cotizador.agregarComponente(1, monitor);
+		
+		Componente monitor2 = Componente.crearMonitor("M022","Monitor 15 pulgadas","Sony","VR-30",
+				new BigDecimal(1100), new BigDecimal(2000));
+		cotizador.agregarComponente(4, monitor2);
+		cotizador.agregarComponente(7, monitor2);
+		try {
+			cotizador.eliminarComponente(null);
+		}
+		catch(Exception ex) {
+			System.out.println(ex.getClass().getName());
+			System.out.println("Mensaje:" + ex.getMessage());
+		}
+		
+	}
 
 	private static void testMostrarCaracteristicas() {
 		System.out.println("*** testMostrarCaracteristicas ***");
