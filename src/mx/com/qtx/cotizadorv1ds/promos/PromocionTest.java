@@ -1,4 +1,4 @@
-package mx.com.qtx.cotizadorv1ds.casosDeUso;
+package mx.com.qtx.cotizadorv1ds.promos;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -8,12 +8,6 @@ import mx.com.qtx.cotizadorv1ds.config.Config;
 import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
 import mx.com.qtx.cotizadorv1ds.core.ICotizador;
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
-import mx.com.qtx.cotizadorv1ds.promos.PromDsctoPlano;
-import mx.com.qtx.cotizadorv1ds.promos.PromDsctoXcantidad;
-import mx.com.qtx.cotizadorv1ds.promos.PromNXM;
-import mx.com.qtx.cotizadorv1ds.promos.PromSinDescto;
-import mx.com.qtx.cotizadorv1ds.promos.Promocion;
-import mx.com.qtx.cotizadorv1ds.promos.PromocionBuilder;
 
 public class PromocionTest {
 	private static Map<Integer, Double> mapDsctos = Map.of(0,  0.0,

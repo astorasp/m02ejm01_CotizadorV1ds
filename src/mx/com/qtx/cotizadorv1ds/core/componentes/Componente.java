@@ -2,7 +2,7 @@ package mx.com.qtx.cotizadorv1ds.core.componentes;
 import java.math.BigDecimal;
 import java.util.List;
 
-import mx.com.qtx.cotizadorv1ds.promos.Promocion;
+//import mx.com.qtx.cotizadorv1ds.promos.Promocion;
 
 public abstract class Componente {
     protected String id;
@@ -12,7 +12,7 @@ public abstract class Componente {
     protected BigDecimal costo;
     protected BigDecimal precioBase;
     
-    protected Promocion promo;
+    protected IPromocion promo;
     
     // Constructor
     public Componente(String id, String descripcion, String marca, String modelo, 
@@ -45,11 +45,11 @@ public abstract class Componente {
     public void setPrecioBase(BigDecimal precioBase) { this.precioBase = precioBase; }
 
 
-	public Promocion getPromo() {
+	public IPromocion getPromo() {
 		return promo;
 	}
 
-	public void setPromo(Promocion promo) {
+	public void setPromo(IPromocion promo) {
 		this.promo = promo;
 	}
 
