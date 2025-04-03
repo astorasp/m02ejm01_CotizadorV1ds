@@ -1,5 +1,4 @@
 package mx.com.qtx.cotizadorv1ds.promos;
-
 /**
  * @author hp835
  * @version 1.0

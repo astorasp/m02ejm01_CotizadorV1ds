@@ -1,14 +1,14 @@
 package mx.com.qtx.cotizadorv1ds.promos;
 
-import java.math.BigDecimal;
 import java.util.Map;
+import mx.com.qtx.cotizadorv1ds.core.componentes.IPromocion;
 
 /**
  * @author hp835
  * @version 1.0
  * @created 24-mar.-2025 11:16:12 p. m.
  */
-public abstract class Promocion {
+public abstract class Promocion implements IPromocion {
 
 	private String descripcion;
 	private String nombre;
@@ -36,12 +36,7 @@ public abstract class Promocion {
 		this.nombre = nombre;
 	}
 
-	/**
-	 * 
-	 * @param cant
-	 * @param precioBase
-	 */
-	public abstract BigDecimal calcularImportePromocion(int cant, BigDecimal precioBase);
+	
 
 	/**
 	 * 
