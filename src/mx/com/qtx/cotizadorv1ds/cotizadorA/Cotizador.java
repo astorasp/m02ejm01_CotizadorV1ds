@@ -1,12 +1,14 @@
 package mx.com.qtx.cotizadorv1ds.cotizadorA;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
 import mx.com.qtx.cotizadorv1ds.core.DetalleCotizacion;
 import mx.com.qtx.cotizadorv1ds.core.ICotizador;
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
+import mx.com.qtx.cotizadorv1ds.excepcion.ComponenteInvalidoException;
 
 public class Cotizador implements ICotizador{
     private List<Componente> componentes = new ArrayList<>();
@@ -18,7 +20,9 @@ public class Cotizador implements ICotizador{
     	this.componentes.add(componente);
     }
 
-    public void eliminarComponente(String idComponente) {
+    public void eliminarComponente(String idComponente) throws ComponenteInvalidoException {
+        if(idComponente == null)
+            throw new ComponenteInvalidoException("idComponente nulo",null);
     	int i = this.componentes.stream().map(compI->compI.getId())
     			                         .toList().indexOf(idComponente);
     	if (i==-1) // NO existe
