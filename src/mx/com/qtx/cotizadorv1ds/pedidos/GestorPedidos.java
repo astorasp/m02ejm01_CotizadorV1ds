@@ -65,7 +65,6 @@ public class GestorPedidos {
                     && datosArticulo.get("importeTotalLinea") instanceof BigDecimal ) {
                  // Calcular precio unitario si solo tenemos el total
                  importeTotal = (BigDecimal) datosArticulo.get("importeTotalLinea");
-                 System.out.println("GestorPedidos: Importe total: " + importeTotal);
             }
 
             nuevoPedido.agregarDetallePedido(idArticulo, descripcion, cantidad, 

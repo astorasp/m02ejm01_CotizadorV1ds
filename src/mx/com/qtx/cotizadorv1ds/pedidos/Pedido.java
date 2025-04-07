@@ -71,12 +71,13 @@ public class Pedido {
         sb.append("=".repeat(30));
         sb.append("\n");
         sb.append("numPedido=").append(numPedido)
-          .append("\nfechaEmision=").append(fechaEmision)
-          .append("\nfechaEntrega=").append(fechaEntrega)
-          .append("\nnivelSurtido=").append(nivelSurtido)
-          .append("\nproveedor=").append(proveedor != null ? proveedor.getCve() : "N/A")
-          .append("\n").append("=".repeat(30))
-          .append("\nDetalle Pedido: \n");
+            .append("\nfechaEmision=").append(fechaEmision)
+            .append("\nfechaEntrega=").append(fechaEntrega)
+            .append("\nnivelSurtido=").append(nivelSurtido)
+            .append("\nproveedor=").append(proveedor != null ? proveedor.getCve() : "N/A")
+            .append("\n").append("=".repeat(30))
+            .append("\nDetalle Pedido: \n")
+            .append(DetallePedido.getHeader());
         for (DetallePedido detalle : detallesPedido) {
             sb.append("\n").append(detalle.toString());
         }

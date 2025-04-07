@@ -55,4 +55,10 @@ public class DetallePedido {
                              this.precioUnitario,
                              this.totalCotizado);
     }
+
+    public static String getHeader() {
+        // Devuelve la cadena de encabezado formateada
+        return String.format("| %-10s | %-30s | %5s | %15s | %15s |", 
+                             "idArticulo", "descripcion", "cant.", "precio Unitario", "total Cotizado");
+    }
 }

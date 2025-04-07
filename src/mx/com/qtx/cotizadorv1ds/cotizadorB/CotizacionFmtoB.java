@@ -18,7 +18,7 @@ public class CotizacionFmtoB extends Cotizacion {
 		}
 		
 		System.out.printf("\n%88s","$" + String.format("%10.2f",this.getTotal()));
-		
+		System.out.println(" ");
 	}
 	
 	@Override

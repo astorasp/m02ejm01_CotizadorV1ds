@@ -16,8 +16,8 @@ public class CotizacionAdapterTest {
         testGenerarCotizacion();
     }
 
-	private static void testGenerarCotizacion() {
-		
+	private static Cotizacion obtenerCotizacionMock()
+	{
 		ICotizador cotizador = getCotizadorActual();
 		
 		Componente monitor = Componente.crearMonitor("M001","Monitor 17 pulgadas","Samsung","Goliat-500",
@@ -49,7 +49,11 @@ public class CotizacionAdapterTest {
 		cotizador.agregarComponente(1, miPc);
 		Cotizacion cotizacion = cotizador.generarCotizacion();
 		cotizacion.emitirComoReporte();
+		return cotizacion;
+	}
 
+	private static void testGenerarCotizacion() {
+		Cotizacion cotizacion = obtenerCotizacionMock();
         ManejadorCreacionPedidos manejador = new ManejadorCreacionPedidos();
         manejador.crearPedidoDesdeCotizacion(cotizacion, "PROV001",
              1, 1, LocalDate.now(), LocalDate.now().plusDays(2));
