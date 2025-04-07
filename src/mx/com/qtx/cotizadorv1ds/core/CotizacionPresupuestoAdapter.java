@@ -1,18 +1,16 @@
 package mx.com.qtx.cotizadorv1ds.core;
 
-import mx.com.qtx.cotizadorv1ds.core.presupuestos.IPresupuesto;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import mx.com.qtx.cotizadorv1ds.pedidos.IPresupuesto;
 
 public class CotizacionPresupuestoAdapter implements IPresupuesto {
 
     private Cotizacion cotizacionAdaptee; // El objeto que adaptamos (la cotización)
 
     public CotizacionPresupuestoAdapter(Cotizacion cotizacionAdaptee) {
-        System.out.println("CotizacionAdapter: Adaptando la cotización generada...");
         this.cotizacionAdaptee = cotizacionAdaptee;
-        System.out.println("CotizacionAdapter: Adaptación lista.");
     }
 
     @Override

@@ -1,4 +1,4 @@
-package mx.com.qtx.cotizadorv1ds.core.pedidos;
+package mx.com.qtx.cotizadorv1ds.pedidos;
 
 public class Proveedor {
     private String cve;

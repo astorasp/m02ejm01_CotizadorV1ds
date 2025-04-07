@@ -1,4 +1,4 @@
-package mx.com.qtx.cotizadorv1ds.core.pedidos;
+package mx.com.qtx.cotizadorv1ds.pedidos;
 
 import java.math.BigDecimal;
 
@@ -47,7 +47,12 @@ public class DetallePedido {
 
     @Override
     public String toString() {
-        return "DetallePedido [idArticulo=" + idArticulo + ", descripcion=" + descripcion + ", cantidad=" + cantidad
-                + ", precioUnitario=" + precioUnitario + "]";
+        // Formato: | idArticulo | descripcion                      | cant. | precio Unitario |  total Cotizado |
+        return String.format("| %-10s | %-30s | %5d | %,15.2f | %,15.2f |", 
+                             this.idArticulo, 
+                             this.descripcion, 
+                             this.cantidad, 
+                             this.precioUnitario,
+                             this.totalCotizado);
     }
 }

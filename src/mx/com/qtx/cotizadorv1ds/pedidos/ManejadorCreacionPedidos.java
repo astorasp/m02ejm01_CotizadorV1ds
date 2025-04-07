@@ -1,10 +1,9 @@
-package mx.com.qtx.cotizadorv1ds.core.pedidos;
+package mx.com.qtx.cotizadorv1ds.pedidos;
 
 import java.time.LocalDate;
 
 import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
 import mx.com.qtx.cotizadorv1ds.core.CotizacionPresupuestoAdapter;
-import mx.com.qtx.cotizadorv1ds.core.presupuestos.IPresupuesto;
 
 public class ManejadorCreacionPedidos {
     private GestorPedidos gestorPedidos;
@@ -24,11 +23,8 @@ public class ManejadorCreacionPedidos {
             gestorPedidos.generarPedido(cveProveedor, numPedido, nivelSurtido, 
                 fechaEmision, fechaEntrega);
             System.out.println("Pedido generado exitosamente para cotización: " + cotizacion.getNum());
-
-        } catch (IllegalArgumentException e) {
-             System.err.println("Error de datos al generar pedido: " + e.getMessage());
-             // Lanzar excepción, loggear, etc.
-        } catch (Exception e) {
+        } 
+        catch (Exception e) {
              System.err.println("Error inesperado al generar pedido: " + e.getMessage());
              // Lanzar excepción, loggear, etc.
         }

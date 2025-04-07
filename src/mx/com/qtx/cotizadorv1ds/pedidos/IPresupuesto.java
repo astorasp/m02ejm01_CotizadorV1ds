@@ -1,4 +1,4 @@
-package mx.com.qtx.cotizadorv1ds.core.presupuestos;
+package mx.com.qtx.cotizadorv1ds.pedidos;
 
 import java.util.Map;
 

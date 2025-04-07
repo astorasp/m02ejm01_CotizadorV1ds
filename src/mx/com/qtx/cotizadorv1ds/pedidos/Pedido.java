@@ -1,4 +1,4 @@
-package mx.com.qtx.cotizadorv1ds.core.pedidos;
+package mx.com.qtx.cotizadorv1ds.pedidos;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -67,16 +67,20 @@ public class Pedido {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Pedido [numPedido=").append(numPedido)
-          .append(", fechaEmision=").append(fechaEmision)
-          .append(", fechaEntrega=").append(fechaEntrega)
-          .append(", nivelSurtido=").append(nivelSurtido)
-          .append(", proveedor=").append(proveedor != null ? proveedor.getCve() : "N/A")
-          .append(", detalles=").append(detallesPedido.size()).append(" items [");
+        sb.append("Datos del Pedido: \n");
+        sb.append("=".repeat(30));
+        sb.append("\n");
+        sb.append("numPedido=").append(numPedido)
+          .append("\nfechaEmision=").append(fechaEmision)
+          .append("\nfechaEntrega=").append(fechaEntrega)
+          .append("\nnivelSurtido=").append(nivelSurtido)
+          .append("\nproveedor=").append(proveedor != null ? proveedor.getCve() : "N/A")
+          .append("\n").append("=".repeat(30))
+          .append("\nDetalle Pedido: \n");
         for (DetallePedido detalle : detallesPedido) {
             sb.append("\n").append(detalle.toString());
         }
-        sb.append("]");
+        
         
         return sb.toString();
     }

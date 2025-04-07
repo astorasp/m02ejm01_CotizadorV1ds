@@ -1,12 +1,12 @@
-package mx.com.qtx.cotizadorv1ds.core.pedidos;
+package mx.com.qtx.cotizadorv1ds.pedidos;
 
-import mx.com.qtx.cotizadorv1ds.core.presupuestos.IPresupuesto;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
+import mx.com.qtx.cotizadorv1ds.pedidos.excepciones.PresupuestoNoCargadoExcepcion;
+import mx.com.qtx.cotizadorv1ds.pedidos.excepciones.ProveedorNoExisteExcepcion;
 
 public class GestorPedidos {
     private IPresupuesto presupuestoActual; // El presupuesto cargado
@@ -25,30 +25,28 @@ public class GestorPedidos {
         System.out.println("GestorPedidos: Recibiendo presupuesto...");
         // Aquí el gestor valida o procesa el presupuesto si es necesario
         Map<String, Integer> cantidades = presupuesto.getCantidadesXIdArticulo();
-        System.out.println("GestorPedidos: Cantidades por artículo recibidas:");
+        //System.out.println("GestorPedidos: Cantidades por artículo recibidas:");
         cantidades.forEach((id, cant) -> {
             String desc = presupuesto.getDescripcionArticulo(id);
-            System.out.printf("  - ID: %s, Desc: %s, Cant: %d%n", id, desc, cant);
+            //System.out.printf("  - ID: %s, Desc: %s, Cant: %d%n", id, desc, cant);
         });
         this.presupuestoActual = presupuesto;
-        System.out.println("GestorPedidos: Presupuesto agregado.");
+        ///System.out.println("GestorPedidos: Presupuesto agregado.");
     }
 
     public void generarPedido(String cveProveedor,int numPedido, int nivelSurtido,
-        LocalDate fechaEmision, LocalDate fechaEntrega) {
+        LocalDate fechaEmision, LocalDate fechaEntrega) throws ProveedorNoExisteExcepcion, 
+            PresupuestoNoCargadoExcepcion {
         if (this.presupuestoActual == null) {
-            System.out.println("GestorPedidos: Error - No hay presupuesto cargado.");
-            return;
+            throw new PresupuestoNoCargadoExcepcion();
         }
         Proveedor prov = proveedores.get(cveProveedor);
         if (prov == null) {
-            System.out.println("GestorPedidos: Error - Proveedor con clave " + cveProveedor + " no encontrado.");
-            return;
+            throw new ProveedorNoExisteExcepcion(cveProveedor);
         }
         // Lógica para extraer datos del presupuesto y crear detalles del pedido
-        System.out.println("GestorPedidos: Extrayendo datos del presupuesto para crear pedido...");
         Pedido nuevoPedido = new Pedido(numPedido, fechaEmision, 
-            fechaEntrega, nivelSurtido,prov);
+            fechaEntrega, nivelSurtido, prov);
         Map<String, Integer> cantidades = this.presupuestoActual.getCantidadesXIdArticulo();
         for (Map.Entry<String, Integer> entry : cantidades.entrySet()) {
             String idArticulo = entry.getKey();
@@ -63,10 +61,11 @@ public class GestorPedidos {
                     && datosArticulo.get("precioBase") instanceof BigDecimal) {
                 precioUnitario = (BigDecimal) datosArticulo.get("precioBase");
             }
-             else if (datosArticulo.containsKey("importeTotalLinea") 
-                    && datosArticulo.get("importeTotalLinea") instanceof BigDecimal && cantidad > 0) {
+            if (datosArticulo.containsKey("importeTotalLinea") 
+                    && datosArticulo.get("importeTotalLinea") instanceof BigDecimal ) {
                  // Calcular precio unitario si solo tenemos el total
                  importeTotal = (BigDecimal) datosArticulo.get("importeTotalLinea");
+                 System.out.println("GestorPedidos: Importe total: " + importeTotal);
             }
 
             nuevoPedido.agregarDetallePedido(idArticulo, descripcion, cantidad, 
