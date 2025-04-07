@@ -2,6 +2,8 @@ package mx.com.qtx.cotizadorv1ds.core;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -50,13 +52,18 @@ public class Cotizacion {
 	public void setTotal(BigDecimal total) {
 		this.total = total;
 	}
-	
+
+	public List<DetalleCotizacion> getDetalles() {
+		return new ArrayList<DetalleCotizacion>(detalles.values());
+	}
+
 	public void emitirComoReporte() {
 		System.out.println("================== Cotizacion número:" + this.num + " del " + this.fecha + " ==================\n");
 		for(Integer k:this.detalles.keySet()) {
 			this.desplegarLineaCotizacion(this.detalles.get(k));
 		}
 		System.out.printf("\n%72s","Total:$" + String.format("%8.2f",this.getTotal()));
+		System.out.println(" ");
 		
 	}
 	

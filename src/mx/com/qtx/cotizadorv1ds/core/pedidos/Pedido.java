@@ -72,7 +72,12 @@ public class Pedido {
           .append(", fechaEntrega=").append(fechaEntrega)
           .append(", nivelSurtido=").append(nivelSurtido)
           .append(", proveedor=").append(proveedor != null ? proveedor.getCve() : "N/A")
-          .append(", detalles=").append(detallesPedido.size()).append(" items]");
+          .append(", detalles=").append(detallesPedido.size()).append(" items [");
+        for (DetallePedido detalle : detallesPedido) {
+            sb.append("\n").append(detalle.toString());
+        }
+        sb.append("]");
+        
         return sb.toString();
     }
 }

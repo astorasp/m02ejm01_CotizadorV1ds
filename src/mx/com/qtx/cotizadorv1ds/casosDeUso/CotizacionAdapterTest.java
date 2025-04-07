@@ -1,52 +1,66 @@
 package mx.com.qtx.cotizadorv1ds.casosDeUso;
 
-import mx.com.qtx.cotizadorv1ds.adapters.CotizacionAdapter;
-import mx.com.qtx.cotizadorv1ds.core.cotizacion.Componente;
-import mx.com.qtx.cotizadorv1ds.core.cotizacion.Cotizacion;
-import mx.com.qtx.cotizadorv1ds.core.cotizacion.ICotizador;
-import mx.com.qtx.cotizadorv1ds.core.pedidos.GestorPedidos;
-import mx.com.qtx.cotizadorv1ds.core.pedidos.Pedido;
-import mx.com.qtx.cotizadorv1ds.core.presupuestos.IPresupuesto;
-import mx.com.qtx.cotizadorv1ds.cotizadorA.CotizadorImplA;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
-public class CotizacionAdapterTest {
+import mx.com.qtx.cotizadorv1ds.config.Config;
+import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
+import mx.com.qtx.cotizadorv1ds.core.ICotizador;
+import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
+import mx.com.qtx.cotizadorv1ds.core.pedidos.ManejadorCreacionPedidos;
+
+public class CotizacionAdapterTest { 
 
     public static void main(String[] args) {
-        System.out.println("--- DEMO PATRÓN ADAPTER ---");
-
-        // 1. Crear instancias de los componentes
-        ICotizador miCotizador = new CotizadorImplA();
-        GestorPedidos miGestorPedidos = new GestorPedidos();
-
-        // 2. Usar el Cotizador para agregar componentes
-        System.out.println("\n--- Paso 1: Preparar Cotización ---");
-        miCotizador.agregarComponente(1, new Componente("CPU001", "Procesador Intel Core i7"));
-        miCotizador.agregarComponente(2, new Componente("MEM002", "Memoria RAM 16GB DDR4"));
-        miCotizador.agregarComponente(1, new Componente("SSD003", "Disco Estado Sólido 1TB NVMe"));
-        miCotizador.listarComponentes();
-
-        // 3. Generar la Cotizacion
-        Cotizacion cotizacionGenerada = miCotizador.generarCotizacion();
-        cotizacionGenerada.emitirComoReporte(); // Ver la cotización original
-
-        // 4. Crear el Adapter para que GestorPedidos pueda usar la Cotizacion
-        System.out.println("\n--- Paso 2: Adaptar Cotización a IPresupuesto ---");
-        IPresupuesto presupuestoAdaptado = new CotizacionAdapter(cotizacionGenerada);
-
-        // 5. Pasar el presupuesto adaptado al GestorPedidos
-        System.out.println("\n--- Paso 3: Usar Presupuesto Adaptado en GestorPedidos ---");
-        miGestorPedidos.agregarPresupuesto(presupuestoAdaptado);
-
-        // 6. Generar un pedido usando el presupuesto adaptado
-        System.out.println("\n--- Paso 4: Generar Pedido desde Presupuesto Adaptado ---");
-        Pedido pedidoGenerado = miGestorPedidos.generarPedido("PROV001");
-
-        if (pedidoGenerado != null) {
-            System.out.println("\nPedido final generado: " + pedidoGenerado);
-        } else {
-            System.out.println("\nNo se pudo generar el pedido.");
-        }
-
-        System.out.println("\n--- FIN DEMO --- ");
+        testGenerarCotizacion();
     }
+
+	private static void testGenerarCotizacion() {
+		
+		ICotizador cotizador = getCotizadorActual();
+		
+		Componente monitor = Componente.crearMonitor("M001","Monitor 17 pulgadas","Samsung","Goliat-500",
+						new BigDecimal(1000), new BigDecimal(2000));
+		cotizador.agregarComponente(1, monitor);
+		
+		Componente monitor2 = Componente.crearMonitor("M022","Monitor 15 pulgadas","Sony","VR-30",
+				new BigDecimal(1100), new BigDecimal(2000));
+		cotizador.agregarComponente(4, monitor2);
+		cotizador.agregarComponente(7, monitor2);
+		
+		Componente disco = Componente.crearDiscoDuro("D-23", "Disco estado sólido", "Seagate", "T-455", new BigDecimal(500), 
+				new BigDecimal(1000), "2TB");
+		cotizador.agregarComponente(10, disco);
+	
+	    Componente tarjeta = Componente.crearTarjetaVideo("C0XY", "Tarjeta THOR", "TechBrand", "X200-34", 
+	            new BigDecimal("150.00"), new BigDecimal("300.00"), "8GB");
+		cotizador.agregarComponente(10, tarjeta);
+	    
+    	Componente discoPc = Componente.crearDiscoDuro("D001", "Disco Seagate", "TechXYZ", "X200", 
+                new BigDecimal("1880.00"), new BigDecimal("2000.00"), "1TB");   
+	   	Componente monitorPc = Componente.crearMonitor("M001", "Monitor 17 pulgadas", "Sony", "Z9000", 
+	            new BigDecimal("3200.00"), new BigDecimal("6000.00"));   
+	    Componente tarjetaPc = Componente.crearTarjetaVideo("C001", "Tarjeta XYZ", "TechBrand", "X200", 
+	            new BigDecimal("150.00"), new BigDecimal("200.00"), "16GB");
+	    
+		Componente miPc = Componente.crearPc("pc0001", "Laptop 15000 s300", "Dell", "Terminator",
+												List.of(discoPc,monitorPc,tarjetaPc));
+		cotizador.agregarComponente(1, miPc);
+		Cotizacion cotizacion = cotizador.generarCotizacion();
+		cotizacion.emitirComoReporte();
+
+        ManejadorCreacionPedidos manejador = new ManejadorCreacionPedidos();
+        manejador.crearPedidoDesdeCotizacion(cotizacion, "PROV001",
+             1, 1, LocalDate.now(), LocalDate.now().plusDays(2));
+        manejador.imprimirPedidos();
+
+        manejador.crearPedidoDesdeCotizacion(cotizacion,"PROV002", 
+            2, 3, LocalDate.now(), LocalDate.now().plusDays(4));
+        manejador.imprimirPedidos();
+	}
+
+    private static ICotizador getCotizadorActual() {
+		return Config.getCotizador();
+	}
 } 

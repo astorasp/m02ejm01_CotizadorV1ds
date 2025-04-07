@@ -11,11 +11,10 @@ import java.util.Map;
 public class GestorPedidos {
     private IPresupuesto presupuestoActual; // El presupuesto cargado
     private Map<String, Proveedor> proveedores; // Simula un repositorio de proveedores
-    private List<Pedido> pedidos;
+    private Pedido pedido;
 
     public GestorPedidos() {
         this.proveedores = new HashMap<>();
-        this.pedidos = new ArrayList<>();
         // Simular algunos proveedores
         proveedores.put("PROV001", new Proveedor("PROV001", "Proveedor Alfa", "Alfa SA de CV"));
         proveedores.put("PROV002", new Proveedor("PROV002", "Proveedor Beta", "Beta SA de CV"));        
@@ -72,10 +71,15 @@ public class GestorPedidos {
 
             nuevoPedido.agregarDetallePedido(idArticulo, descripcion, cantidad, 
                 precioUnitario, importeTotal);
-            pedidos.add(nuevoPedido);
+            
         }
-        System.out.println("GestorPedidos: Generando pedido " + nuevoPedido.toString());
+        pedido = nuevoPedido;
         // Aquí iría la lógica para persistir el pedido, enviarlo, etc.
         System.out.println("GestorPedidos: Pedido generado exitosamente.");
+    }
+
+    public void imprimirPedido() {        
+        System.out.println(" ");
+        System.out.println(pedido.toString());
     }
 } 
