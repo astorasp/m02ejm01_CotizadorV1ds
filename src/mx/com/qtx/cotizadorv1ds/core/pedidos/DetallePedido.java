@@ -9,12 +9,15 @@ public class DetallePedido {
     private String descripcion;
     private int cantidad;
     private BigDecimal precioUnitario; // O importe total línea, según necesidad
+    private BigDecimal totalCotizado;
 
-    public DetallePedido(String idArticulo, String descripcion, int cantidad, BigDecimal precioUnitario) {
+    public DetallePedido(String idArticulo, String descripcion, int cantidad
+    , BigDecimal precioUnitario, BigDecimal totalCotizado) {
         this.idArticulo = idArticulo;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
         this.precioUnitario = precioUnitario;
+        this.totalCotizado = totalCotizado;
     }
 
     // Getters
@@ -32,6 +35,14 @@ public class DetallePedido {
 
     public BigDecimal getPrecioUnitario() {
         return precioUnitario;
+    }
+
+    public BigDecimal getTotalCotizado() {
+        return totalCotizado;
+    }
+    
+    public void setTotalCotizado(BigDecimal totalCotizado) {
+        this.totalCotizado = totalCotizado;
     }
 
     @Override

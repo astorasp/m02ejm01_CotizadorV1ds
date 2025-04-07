@@ -1,7 +1,5 @@
-package mx.com.qtx.cotizadorv1ds.adapters;
+package mx.com.qtx.cotizadorv1ds.core.cotizacion;
 
-import mx.com.qtx.cotizadorv1ds.core.cotizacion.Cotizacion;
-import mx.com.qtx.cotizadorv1ds.core.cotizacion.DetalleCotizacion;
 import mx.com.qtx.cotizadorv1ds.core.presupuestos.IPresupuesto;
 
 import java.util.HashMap;
@@ -10,23 +8,17 @@ import java.util.Map;
 public class CotizacionAdapter implements IPresupuesto {
 
     private Cotizacion cotizacionAdaptee; // El objeto que adaptamos (la cotización)
-    private Map<String, DetalleCotizacion> detallesPorId; // Para búsqueda rápida
 
     public CotizacionAdapter(Cotizacion cotizacionAdaptee) {
         System.out.println("CotizacionAdapter: Adaptando la cotización generada...");
         this.cotizacionAdaptee = cotizacionAdaptee;
-        this.detallesPorId = new HashMap<>();
-        // Pre-procesar los detalles para fácil acceso por ID
-        for (DetalleCotizacion detalle : cotizacionAdaptee.getDetalles()) {
-            this.detallesPorId.put(detalle.getIdComponente(), detalle);
-        }
         System.out.println("CotizacionAdapter: Adaptación lista.");
     }
 
     @Override
     public String getDescripcionArticulo(String idArticulo) {
         System.out.println("CotizacionAdapter: getDescripcionArticulo(id: " + idArticulo + ")");
-        DetalleCotizacion detalle = detallesPorId.get(idArticulo);
+        DetalleCotizacion detalle = this.getDetallePorId(idArticulo);
         return (detalle != null) ? detalle.getDescripcion() : "Descripción no encontrada";
     }
 
@@ -43,7 +35,7 @@ public class CotizacionAdapter implements IPresupuesto {
     @Override
     public Map<String, Object> getDatosArticulo(String idArticulo) {
         System.out.println("CotizacionAdapter: getDatosArticulo(id: " + idArticulo + ")");
-        DetalleCotizacion detalle = detallesPorId.get(idArticulo);
+        DetalleCotizacion detalle = this.getDetallePorId(idArticulo);
         if (detalle == null) {
             return new HashMap<>(); // Vacío si no se encuentra
         }
@@ -61,5 +53,15 @@ public class CotizacionAdapter implements IPresupuesto {
     // Método adicional para acceder a la cotización original si fuera necesario
     public Cotizacion getCotizacionOriginal() {
         return cotizacionAdaptee;
+    }
+
+    //Metodo para buscar un detalle de cotizacion por el id de componente
+    private DetalleCotizacion getDetallePorId(String idArticulo) {
+        return cotizacionAdaptee
+            .getDetalles()
+            .stream()
+            .filter(x -> x.getIdComponente().equals(idArticulo))
+            .findFirst()
+            .orElse(null);  
     }
 } 
