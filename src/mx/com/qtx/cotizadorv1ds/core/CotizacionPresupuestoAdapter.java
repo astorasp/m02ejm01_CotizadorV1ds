@@ -4,12 +4,16 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mx.com.qtx.cotizadorv1ds.pedidos.IPresupuesto;
+import mx.com.qtx.cotizadorv1ds.pedidos.excepciones.PresupuestoNoCargadoExcepcion;
 
 public class CotizacionPresupuestoAdapter implements IPresupuesto {
 
     private Cotizacion cotizacionAdaptee; // El objeto que adaptamos (la cotización)
 
-    public CotizacionPresupuestoAdapter(Cotizacion cotizacionAdaptee) {
+    public CotizacionPresupuestoAdapter(Cotizacion cotizacionAdaptee) throws PresupuestoNoCargadoExcepcion {
+        if(cotizacionAdaptee == null){
+            throw new PresupuestoNoCargadoExcepcion();
+        }        
         this.cotizacionAdaptee = cotizacionAdaptee;
     }
 

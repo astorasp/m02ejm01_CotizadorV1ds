@@ -25,8 +25,28 @@ public class CotizacionAdapterTest {
      *
      * @param args Argumentos de línea de comandos (no utilizados).
      */
-    public static void main(String[] args) {
-        testGenerarCotizacion();
+    public static void main(String[] args) {        
+        System.out.println("\n==== Probando con Proveedor Inexistente ====\n");
+		try{
+			testGenerarPedidoProveedorInexistente();
+			imprimirResultado("testGenerarPedidoProveedorInexistente", false);
+		}
+		catch(Exception e){
+			imprimirResultado("testGenerarPedidoProveedorInexistente", true);
+		}
+
+        System.out.println("\n==== Probando con Cotización Nula ====");
+        try{
+			testGenerarPedidoCotizacionNula();
+			imprimirResultado("testGenerarPedidoCotizacionNula", false); // Fallo si no lanza excepción
+		}
+		catch(Exception e){
+			// Se espera una excepción (NullPointerException probablemente) 
+			System.out.println("    (Se capturó la excepción esperada: " + e.getClass().getSimpleName() + ")");
+			imprimirResultado("testGenerarPedidoCotizacionNula", true); // Éxito si lanza excepción
+		}
+		System.out.println("\n==== Probando Gestor de pedidos happy path ====");
+		testGenerarCotizacion();
     }    
 
     /**
@@ -39,6 +59,7 @@ public class CotizacionAdapterTest {
      */
 	private static void testGenerarCotizacion() {
 		Cotizacion cotizacion = obtenerCotizacionMock();
+		cotizacion.emitirComoReporte();
         ManejadorCreacionPedidos manejador = new ManejadorCreacionPedidos();
         manejador.crearPedidoDesdeCotizacion(cotizacion, "PROV001",
              1, 1, LocalDate.now(), LocalDate.now().plusDays(2));
@@ -48,6 +69,35 @@ public class CotizacionAdapterTest {
             2, 3, LocalDate.now(), LocalDate.now().plusDays(4));
         manejador.imprimirPedidos();
 	}
+
+    /**
+     * Prueba la generación de un pedido utilizando una clave de proveedor que no existe.
+     * Se espera que el ManejadorCreacionPedidos capture la excepción ProveedorNoExisteExcepcion
+     * (lanzada por GestorPedidos) y muestre un mensaje de error en la consola.
+     */
+    private static void testGenerarPedidoProveedorInexistente() {
+        Cotizacion cotizacion = obtenerCotizacionMock();
+        ManejadorCreacionPedidos manejador = new ManejadorCreacionPedidos();
+        // Intentar crear un pedido con un proveedor que no existe ("PROV999")
+        manejador.crearPedidoDesdeCotizacion(cotizacion, "PROV999",
+             3, 1, LocalDate.now(), LocalDate.now().plusDays(5));
+        // Esta línea podría no imprimir nada relevante si el pedido no se creó debido al error.
+        manejador.imprimirPedidos();
+    }
+
+    /**
+     * Prueba la generación de un pedido pasando una cotización nula.
+     * Se espera que el ManejadorCreacionPedidos lance alguna excepción 
+     * (probablemente NullPointerException) al intentar acceder a la cotización nula.
+     */
+    private static void testGenerarPedidoCotizacionNula() {
+        System.out.println("Ejecutando prueba: testGenerarPedidoCotizacionNula");
+        ManejadorCreacionPedidos manejador = new ManejadorCreacionPedidos();
+        // Intentar crear un pedido pasando null como cotización
+        manejador.crearPedidoDesdeCotizacion(null, "PROV001", // Proveedor válido o cualquiera
+             4, 1, LocalDate.now(), LocalDate.now().plusDays(1));
+        // No debería llegar aquí si se lanza la excepción esperada
+    }
 
 /**
      * Crea y devuelve una instancia de {@link Cotizacion} con datos de ejemplo (mock).
@@ -87,8 +137,7 @@ public class CotizacionAdapterTest {
 		Componente miPc = Componente.crearPc("pc0001", "Laptop 15000 s300", "Dell", "Terminator",
 												List.of(discoPc,monitorPc,tarjetaPc));
 		cotizador.agregarComponente(1, miPc);
-		Cotizacion cotizacion = cotizador.generarCotizacion();
-		cotizacion.emitirComoReporte();
+		Cotizacion cotizacion = cotizador.generarCotizacion();		
 		return cotizacion;
 	}	
 
@@ -101,4 +150,9 @@ public class CotizacionAdapterTest {
     private static ICotizador getCotizadorActual() {
 		return Config.getCotizador();
 	}
+
+	private static void imprimirResultado(String nombrePrueba, boolean exito) {
+        String estado = exito ? "✅ Éxito" : "❌ Fallo";
+        System.out.println(estado + " - " + nombrePrueba);
+    }
 } 

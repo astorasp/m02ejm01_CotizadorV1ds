@@ -36,17 +36,14 @@ public class GestorPedidos {
      *
      * @param presupuesto La instancia de IPresupuesto a utilizar.
      */
-    public void agregarPresupuesto(IPresupuesto presupuesto) {
+    public void agregarPresupuesto(IPresupuesto presupuesto) throws PresupuestoNoCargadoExcepcion {
         System.out.println("GestorPedidos: Recibiendo presupuesto...");
-        // Aquí el gestor valida o procesa el presupuesto si es necesario
-        Map<String, Integer> cantidades = presupuesto.getCantidadesXIdArticulo();
-        //System.out.println("GestorPedidos: Cantidades por artículo recibidas:");
-        cantidades.forEach((id, cant) -> {
-            String desc = presupuesto.getDescripcionArticulo(id);
-            //System.out.printf("  - ID: %s, Desc: %s, Cant: %d%n", id, desc, cant);
-        });
+        if(presupuesto == null){
+            throw new PresupuestoNoCargadoExcepcion();
+        }
         this.presupuestoActual = presupuesto;
-        ///System.out.println("GestorPedidos: Presupuesto agregado.");
+        Map<String, Integer> cantidades = presupuesto.getCantidadesXIdArticulo();
+        
     }
 
     /**

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
 import mx.com.qtx.cotizadorv1ds.core.CotizacionPresupuestoAdapter;
+import mx.com.qtx.cotizadorv1ds.pedidos.excepciones.PresupuestoNoCargadoExcepcion;
 
 /**
  * Orquesta el proceso de creación de pedidos a partir de objetos Cotizacion.
@@ -37,17 +38,20 @@ public class ManejadorCreacionPedidos {
     public void crearPedidoDesdeCotizacion(Cotizacion cotizacion, String cveProveedor, 
                                             int numPedido, int nivelSurtido, 
                                             LocalDate fechaEmision, LocalDate fechaEntrega) {
-        try {
-            System.out.println("Iniciando proceso para generar pedido desde cotización: " + cotizacion.getNum());
+        try {            
             // 1. Adaptar la cotización a un presupuesto
-            IPresupuesto presupuestoAdaptado = new CotizacionPresupuestoAdapter(cotizacion);
+            IPresupuesto presupuestoAdaptado = new CotizacionPresupuestoAdapter(cotizacion);            
             // 2. Agregar el presupuesto al gestor
             gestorPedidos.agregarPresupuesto(presupuestoAdaptado);
+            System.out.println("Iniciando proceso para generar pedido desde cotización: " + cotizacion.getNum());
             // 3. Generar el pedido
             gestorPedidos.generarPedido(cveProveedor, numPedido, nivelSurtido, 
                 fechaEmision, fechaEntrega);
             System.out.println("Pedido generado exitosamente para cotización: " + cotizacion.getNum());
         } 
+        catch (PresupuestoNoCargadoExcepcion e) {
+            System.err.println("Error al cargar el presupuesto: " + e.getMessage());
+        }
         catch (Exception e) {
              System.err.println("Error inesperado al generar pedido: " + e.getMessage());
              // Lanzar excepción, loggear, etc.
