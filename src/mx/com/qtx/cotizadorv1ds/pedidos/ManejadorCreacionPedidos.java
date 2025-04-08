@@ -5,11 +5,35 @@ import java.time.LocalDate;
 import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
 import mx.com.qtx.cotizadorv1ds.core.CotizacionPresupuestoAdapter;
 
+/**
+ * Orquesta el proceso de creación de pedidos a partir de objetos Cotizacion.
+ * Utiliza un GestorPedidos interno y un adaptador para convertir la información
+ * de una cotización al formato esperado por el gestor (IPresupuesto).
+ */
 public class ManejadorCreacionPedidos {
     private GestorPedidos gestorPedidos;
+
+    /**
+     * Construye una nueva instancia de ManejadorCreacionPedidos.
+     * Inicializa el GestorPedidos interno.
+     */
     public ManejadorCreacionPedidos() {
         this.gestorPedidos = new GestorPedidos();
     }
+
+    /**
+     * Crea y genera un pedido utilizando la información de una Cotizacion existente.
+     * El proceso implica adaptar la cotización a IPresupuesto, pasarla al GestorPedidos
+     * y finalmente invocar la generación del pedido en el gestor.
+     * Maneja excepciones genéricas durante el proceso e imprime mensajes en la consola.
+     *
+     * @param cotizacion La cotización original de la cual se generará el pedido.
+     * @param cveProveedor Clave del proveedor para el pedido.
+     * @param numPedido Número deseado para el nuevo pedido.
+     * @param nivelSurtido Nivel inicial de surtido para el pedido.
+     * @param fechaEmision Fecha de emisión del pedido.
+     * @param fechaEntrega Fecha de entrega programada para el pedido.
+     */
     public void crearPedidoDesdeCotizacion(Cotizacion cotizacion, String cveProveedor, 
                                             int numPedido, int nivelSurtido, 
                                             LocalDate fechaEmision, LocalDate fechaEntrega) {
@@ -30,6 +54,10 @@ public class ManejadorCreacionPedidos {
         }
     }
 
+    /**
+     * Solicita al GestorPedidos interno que imprima el último pedido generado.
+     * La salida se dirige a la consola estándar.
+     */
     public void imprimirPedidos() {
         gestorPedidos.imprimirPedido();
     }

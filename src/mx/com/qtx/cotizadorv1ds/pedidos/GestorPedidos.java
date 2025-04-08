@@ -8,11 +8,20 @@ import java.util.Map;
 import mx.com.qtx.cotizadorv1ds.pedidos.excepciones.PresupuestoNoCargadoExcepcion;
 import mx.com.qtx.cotizadorv1ds.pedidos.excepciones.ProveedorNoExisteExcepcion;
 
+/**
+ * Gestiona la creación y manejo de pedidos a partir de presupuestos.
+ * Es responsable de recibir presupuestos, interactuar con un repositorio simulado de proveedores
+ * y generar objetos Pedido basados en la información del presupuesto.
+ */
 public class GestorPedidos {
     private IPresupuesto presupuestoActual; // El presupuesto cargado
     private Map<String, Proveedor> proveedores; // Simula un repositorio de proveedores
     private Pedido pedido;
 
+    /**
+     * Construye una nueva instancia de GestorPedidos.
+     * Inicializa el repositorio simulado de proveedores con datos de ejemplo.
+     */
     public GestorPedidos() {
         this.proveedores = new HashMap<>();
         // Simular algunos proveedores
@@ -21,6 +30,12 @@ public class GestorPedidos {
         proveedores.put("PROV003", new Proveedor("PROV003", "Proveedor Gamma", "Gamma SA de CV"));        
     }
 
+    /**
+     * Agrega (o reemplaza) el presupuesto actual que se utilizará para generar pedidos.
+     * Realiza una validación básica o procesamiento del presupuesto recibido.
+     *
+     * @param presupuesto La instancia de IPresupuesto a utilizar.
+     */
     public void agregarPresupuesto(IPresupuesto presupuesto) {
         System.out.println("GestorPedidos: Recibiendo presupuesto...");
         // Aquí el gestor valida o procesa el presupuesto si es necesario
@@ -34,6 +49,19 @@ public class GestorPedidos {
         ///System.out.println("GestorPedidos: Presupuesto agregado.");
     }
 
+    /**
+     * Genera un nuevo pedido basado en el presupuesto actual cargado y los datos proporcionados.
+     * Extrae la información necesaria del presupuesto, busca al proveedor y crea el objeto Pedido
+     * con sus correspondientes detalles.
+     *
+     * @param cveProveedor Clave del proveedor al que se le hará el pedido.
+     * @param numPedido Número que identificará al nuevo pedido.
+     * @param nivelSurtido Nivel inicial de surtido para el pedido.
+     * @param fechaEmision Fecha de emisión del pedido.
+     * @param fechaEntrega Fecha de entrega programada para el pedido.
+     * @throws ProveedorNoExisteExcepcion Si la clave de proveedor no corresponde a un proveedor conocido.
+     * @throws PresupuestoNoCargadoExcepcion Si no se ha cargado un presupuesto antes de llamar a este método.
+     */
     public void generarPedido(String cveProveedor,int numPedido, int nivelSurtido,
         LocalDate fechaEmision, LocalDate fechaEntrega) throws ProveedorNoExisteExcepcion, 
             PresupuestoNoCargadoExcepcion {
@@ -76,6 +104,10 @@ public class GestorPedidos {
         System.out.println("GestorPedidos: Pedido generado exitosamente.");
     }
 
+    /**
+     * Imprime en la consola la representación en cadena del último pedido generado.
+     * Utiliza el método toString() de la clase Pedido para formatear la salida.
+     */
     public void imprimirPedido() {        
         System.out.println(" ");
         System.out.println(pedido.toString());

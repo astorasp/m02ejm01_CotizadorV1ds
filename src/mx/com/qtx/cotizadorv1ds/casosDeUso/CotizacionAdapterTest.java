@@ -10,12 +10,52 @@ import mx.com.qtx.cotizadorv1ds.core.ICotizador;
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
 import mx.com.qtx.cotizadorv1ds.pedidos.ManejadorCreacionPedidos;
 
+/**
+ * Clase de prueba para demostrar y verificar la creación de pedidos a partir de cotizaciones.
+ * Utiliza un adaptador ({@link mx.com.qtx.cotizadorv1ds.core.CotizacionPresupuestoAdapter})
+ * para convertir una {@link mx.com.qtx.cotizadorv1ds.core.Cotizacion} en un
+ * {@link mx.com.qtx.cotizadorv1ds.pedidos.IPresupuesto} y luego utiliza el
+ * {@link ManejadorCreacionPedidos} para generar los pedidos correspondientes.
+ */
 public class CotizacionAdapterTest { 
 
+    /**
+     * Punto de entrada principal para ejecutar la prueba.
+     * Llama al método que realiza la generación y prueba de los pedidos.
+     *
+     * @param args Argumentos de línea de comandos (no utilizados).
+     */
     public static void main(String[] args) {
         testGenerarCotizacion();
-    }
+    }    
 
+    /**
+     * Realiza la prueba principal de generación de pedidos desde una cotización.
+     * 1. Obtiene una cotización de prueba usando {@link #obtenerCotizacionMock()}.
+     * 2. Crea una instancia de {@link ManejadorCreacionPedidos}.
+     * 3. Llama a {@link ManejadorCreacionPedidos#crearPedidoDesdeCotizacion(Cotizacion, String, int, int, LocalDate, LocalDate)}
+     *    dos veces con diferentes proveedores y datos de pedido.
+     * 4. Imprime los pedidos generados en la consola.
+     */
+	private static void testGenerarCotizacion() {
+		Cotizacion cotizacion = obtenerCotizacionMock();
+        ManejadorCreacionPedidos manejador = new ManejadorCreacionPedidos();
+        manejador.crearPedidoDesdeCotizacion(cotizacion, "PROV001",
+             1, 1, LocalDate.now(), LocalDate.now().plusDays(2));
+        manejador.imprimirPedidos();
+
+        manejador.crearPedidoDesdeCotizacion(cotizacion,"PROV002", 
+            2, 3, LocalDate.now(), LocalDate.now().plusDays(4));
+        manejador.imprimirPedidos();
+	}
+
+/**
+     * Crea y devuelve una instancia de {@link Cotizacion} con datos de ejemplo (mock).
+     * Utiliza el {@link ICotizador} configurado para agregar varios componentes (monitores, discos, etc.)
+     * y luego genera la cotización final.
+     *
+     * @return Una instancia de Cotizacion poblada con datos de prueba.
+     */
 	private static Cotizacion obtenerCotizacionMock()
 	{
 		ICotizador cotizador = getCotizadorActual();
@@ -50,20 +90,14 @@ public class CotizacionAdapterTest {
 		Cotizacion cotizacion = cotizador.generarCotizacion();
 		cotizacion.emitirComoReporte();
 		return cotizacion;
-	}
+	}	
 
-	private static void testGenerarCotizacion() {
-		Cotizacion cotizacion = obtenerCotizacionMock();
-        ManejadorCreacionPedidos manejador = new ManejadorCreacionPedidos();
-        manejador.crearPedidoDesdeCotizacion(cotizacion, "PROV001",
-             1, 1, LocalDate.now(), LocalDate.now().plusDays(2));
-        manejador.imprimirPedidos();
-
-        manejador.crearPedidoDesdeCotizacion(cotizacion,"PROV002", 
-            2, 3, LocalDate.now(), LocalDate.now().plusDays(4));
-        manejador.imprimirPedidos();
-	}
-
+    /**
+     * Obtiene la implementación actual del cotizador según la configuración.
+     * Delega la obtención al método estático {@link Config#getCotizador()}.
+     *
+     * @return Una instancia de {@link ICotizador}.
+     */
     private static ICotizador getCotizadorActual() {
 		return Config.getCotizador();
 	}
