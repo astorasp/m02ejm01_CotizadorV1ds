@@ -13,6 +13,7 @@ public class Cotizacion {
 	protected long num;
 	protected LocalDate fecha;
 	protected BigDecimal total;
+	protected BigDecimal totalImpuestos;
 	
 	protected Map<Integer,DetalleCotizacion> detalles;
 	
@@ -53,6 +54,14 @@ public class Cotizacion {
 		this.total = total;
 	}
 
+	public BigDecimal getTotalImpuestos() {
+		return totalImpuestos;
+	}
+
+	public void setTotalImpuestos(BigDecimal totalImpuestos) {
+		this.totalImpuestos = totalImpuestos;
+	}
+
 	public List<DetalleCotizacion> getDetalles() {
 		return new ArrayList<DetalleCotizacion>(detalles.values());
 	}
@@ -62,6 +71,9 @@ public class Cotizacion {
 		for(Integer k:this.detalles.keySet()) {
 			this.desplegarLineaCotizacion(this.detalles.get(k));
 		}
+
+		System.out.printf("\n%72s","Subtotal:$" + String.format("%8.2f",this.getTotal().subtract(this.getTotalImpuestos())));
+		System.out.printf("\n%72s","Impuestos:$" + String.format("%8.2f",this.getTotalImpuestos()));
 		System.out.printf("\n%72s","Total:$" + String.format("%8.2f",this.getTotal()));
 		System.out.println(" ");
 		

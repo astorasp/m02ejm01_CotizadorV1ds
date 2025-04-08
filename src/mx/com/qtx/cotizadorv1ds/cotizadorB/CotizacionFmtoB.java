@@ -16,8 +16,9 @@ public class CotizacionFmtoB extends Cotizacion {
 		for(Integer k:this.detalles.keySet()) {
 			this.desplegarLineaCotizacion(this.detalles.get(k));
 		}
-		
-		System.out.printf("\n%88s","$" + String.format("%10.2f",this.getTotal()));
+		System.out.printf("\n%88s","Subtotal: $" + String.format("%10.2f",this.getTotal().subtract(this.getTotalImpuestos())));
+		System.out.printf("\n%88s","Impuestos: $" + String.format("%10.2f",this.getTotalImpuestos()));
+		System.out.printf("\n%88s","Total: $" + String.format("%10.2f",this.getTotal()));
 		System.out.println(" ");
 	}
 	

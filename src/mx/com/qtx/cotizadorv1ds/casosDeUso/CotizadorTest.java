@@ -13,9 +13,9 @@ public class CotizadorTest {
 //    	testCreacionPC();
     	
 //    	testAgregarComponentes();
-    	testEliminarComponente();
+    	//testEliminarComponente();
     	
-//    	testGenerarCotizacion();
+    	testGenerarCotizacion();
 //    	testMostrarCaracteristicas();
     	
 //    	testCreacionPcOk_conPcBuilder();
@@ -156,7 +156,7 @@ public class CotizadorTest {
 		Componente miPc = Componente.crearPc("pc0001", "Laptop 15000 s300", "Dell", "Terminator",
 												List.of(discoPc,monitorPc,tarjetaPc));
 		cotizador.agregarComponente(1, miPc);
-		Cotizacion cotizacion = cotizador.generarCotizacion();
+		Cotizacion cotizacion = cotizador.generarCotizacion(null);
 		cotizacion.emitirComoReporte();
 	}
 

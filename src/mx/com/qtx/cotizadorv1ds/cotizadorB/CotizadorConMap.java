@@ -2,12 +2,14 @@ package mx.com.qtx.cotizadorv1ds.cotizadorB;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
 import mx.com.qtx.cotizadorv1ds.core.DetalleCotizacion;
 import mx.com.qtx.cotizadorv1ds.core.ICotizador;
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
+import mx.com.qtx.cotizadorv1ds.impuestos.CalculoImpuesto;
 
 public class CotizadorConMap implements ICotizador {
 	private Map<Componente,Integer> mapCompsYcants;
@@ -35,7 +37,7 @@ public class CotizadorConMap implements ICotizador {
 	}
 
 	@Override
-	public Cotizacion generarCotizacion() {
+	public Cotizacion generarCotizacion(List<CalculoImpuesto> calculoImpuestos) {
         BigDecimal total = new BigDecimal(0);
         
         Cotizacion cotizacion = new CotizacionFmtoB();
@@ -52,6 +54,16 @@ public class CotizadorConMap implements ICotizador {
         	cotizacion.agregarDetalle(detI);
             total = total.add(importeCotizadoI);
         }
+		/*Calculamos el impuesto total de la cotización*/
+		BigDecimal totalImpuestos = new BigDecimal(0);
+		if( calculoImpuestos != null) {
+			for(CalculoImpuesto calculoImpuesto : calculoImpuestos) {
+				BigDecimal impuesto = calculoImpuesto.calcularImpuesto(total);
+				total = total.add(impuesto);
+				totalImpuestos = totalImpuestos.add(impuesto);
+			}
+		}
+		cotizacion.setTotalImpuestos(totalImpuestos);
         cotizacion.setTotal(total);
    	
 		return cotizacion;

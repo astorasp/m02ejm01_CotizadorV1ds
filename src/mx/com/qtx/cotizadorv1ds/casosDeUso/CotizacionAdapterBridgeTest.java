@@ -8,6 +8,12 @@ import mx.com.qtx.cotizadorv1ds.config.Config;
 import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
 import mx.com.qtx.cotizadorv1ds.core.ICotizador;
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
+import mx.com.qtx.cotizadorv1ds.cotizadorA.Cotizador;
+import mx.com.qtx.cotizadorv1ds.impuestos.CalculoImpuesto;
+import mx.com.qtx.cotizadorv1ds.impuestos.CalculoImpuestoFederal;
+import mx.com.qtx.cotizadorv1ds.impuestos.CalculoImpuestoLocal;
+import mx.com.qtx.cotizadorv1ds.impuestos.CalculoImpuestoMexico;
+import mx.com.qtx.cotizadorv1ds.impuestos.CalculoImpuestosUsa;
 import mx.com.qtx.cotizadorv1ds.pedidos.ManejadorCreacionPedidos;
 
 /**
@@ -17,7 +23,7 @@ import mx.com.qtx.cotizadorv1ds.pedidos.ManejadorCreacionPedidos;
  * {@link mx.com.qtx.cotizadorv1ds.pedidos.IPresupuesto} y luego utiliza el
  * {@link ManejadorCreacionPedidos} para generar los pedidos correspondientes.
  */
-public class CotizacionAdapterTest { 
+public class CotizacionAdapterBridgeTest { 
 
     /**
      * Punto de entrada principal para ejecutar la prueba.
@@ -28,7 +34,7 @@ public class CotizacionAdapterTest {
     public static void main(String[] args) {        
         System.out.println("\n==== Probando con Proveedor Inexistente ====\n");
 		try{
-			testGenerarPedidoProveedorInexistente();
+			testGenerarPedidoProveedorInexistente(obtenerCalculoImpuestosMexico());
 			imprimirResultado("testGenerarPedidoProveedorInexistente", false);
 		}
 		catch(Exception e){
@@ -45,8 +51,11 @@ public class CotizacionAdapterTest {
 			System.out.println("    (Se capturó la excepción esperada: " + e.getClass().getSimpleName() + ")");
 			imprimirResultado("testGenerarPedidoCotizacionNula", true); // Éxito si lanza excepción
 		}
-		System.out.println("\n==== Probando Gestor de pedidos happy path ====");
-		testGenerarCotizacion();
+		System.out.println("\n==== Probando Gestor de pedidos happy path con impuestos de México ====");
+		testGenerarCotizacion(obtenerCalculoImpuestosMexicoFederal());
+
+        System.out.println("\n==== Probando Gestor de pedidos happy path con impuestos de USA ====");
+        testGenerarCotizacion(obtenerCalculoImpuestosUsa());
     }    
 
     /**
@@ -57,8 +66,9 @@ public class CotizacionAdapterTest {
      *    dos veces con diferentes proveedores y datos de pedido.
      * 4. Imprime los pedidos generados en la consola.
      */
-	private static void testGenerarCotizacion() {
-		Cotizacion cotizacion = obtenerCotizacionMock();
+	private static void testGenerarCotizacion(List<CalculoImpuesto> impuestos) {
+        ICotizador cotizador = obtenerCotizador();		
+        Cotizacion cotizacion = cotizador.generarCotizacion(impuestos);
 		cotizacion.emitirComoReporte();
         ManejadorCreacionPedidos manejador = new ManejadorCreacionPedidos();
         manejador.crearPedidoDesdeCotizacion(cotizacion, "PROV001",
@@ -75,8 +85,9 @@ public class CotizacionAdapterTest {
      * Se espera que el ManejadorCreacionPedidos capture la excepción ProveedorNoExisteExcepcion
      * (lanzada por GestorPedidos) y muestre un mensaje de error en la consola.
      */
-    private static void testGenerarPedidoProveedorInexistente() {
-        Cotizacion cotizacion = obtenerCotizacionMock();
+    private static void testGenerarPedidoProveedorInexistente(List<CalculoImpuesto> impuestos) {
+        ICotizador cotizador = obtenerCotizador();		
+        Cotizacion cotizacion = cotizador.generarCotizacion(impuestos);
         ManejadorCreacionPedidos manejador = new ManejadorCreacionPedidos();
         // Intentar crear un pedido con un proveedor que no existe ("PROV999")
         manejador.crearPedidoDesdeCotizacion(cotizacion, "PROV999",
@@ -106,7 +117,7 @@ public class CotizacionAdapterTest {
      *
      * @return Una instancia de Cotizacion poblada con datos de prueba.
      */
-	private static Cotizacion obtenerCotizacionMock()
+	private static ICotizador obtenerCotizador()
 	{
 		ICotizador cotizador = getCotizadorActual();
 		
@@ -136,9 +147,8 @@ public class CotizacionAdapterTest {
 	    
 		Componente miPc = Componente.crearPc("pc0001", "Laptop 15000 s300", "Dell", "Terminator",
 												List.of(discoPc,monitorPc,tarjetaPc));
-		cotizador.agregarComponente(1, miPc);
-		Cotizacion cotizacion = cotizador.generarCotizacion();		
-		return cotizacion;
+		cotizador.agregarComponente(1, miPc);		
+		return cotizador;
 	}	
 
     /**
@@ -151,6 +161,20 @@ public class CotizacionAdapterTest {
 		return Config.getCotizador();
 	}
 
+    private static List<CalculoImpuesto> obtenerCalculoImpuestosMexico() {
+        return List.of(new CalculoImpuestoLocal(new CalculoImpuestoMexico()), 
+            new CalculoImpuestoFederal(new CalculoImpuestoMexico()));
+    }
+
+    private static List<CalculoImpuesto> obtenerCalculoImpuestosMexicoFederal() {
+        return List.of(new CalculoImpuestoFederal(new CalculoImpuestoMexico()));
+    }    
+
+    private static List<CalculoImpuesto> obtenerCalculoImpuestosUsa() {
+        return List.of(new CalculoImpuestoLocal(new CalculoImpuestosUsa()), 
+            new CalculoImpuestoFederal(new CalculoImpuestosUsa()));
+    }
+    
 	private static void imprimirResultado(String nombrePrueba, boolean exito) {
         String estado = exito ? "✅ Éxito" : "❌ Fallo";
         System.out.println(estado + " - " + nombrePrueba);

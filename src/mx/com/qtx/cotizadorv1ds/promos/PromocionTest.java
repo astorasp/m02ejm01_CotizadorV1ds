@@ -67,7 +67,7 @@ public class PromocionTest {
 				                   .agregarDsctoPlano(20f)
 				                   .build());
 		cotizador.agregarComponente(1, miPc);
-		Cotizacion cotizacion = cotizador.generarCotizacion();
+		Cotizacion cotizacion = cotizador.generarCotizacion(null);
 		cotizacion.emitirComoReporte();
 	}
 	
