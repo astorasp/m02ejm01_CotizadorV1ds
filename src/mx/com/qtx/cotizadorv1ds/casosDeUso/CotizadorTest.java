@@ -2,8 +2,10 @@ package mx.com.qtx.cotizadorv1ds.casosDeUso;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import mx.com.qtx.cotizadorv1ds.config.Config;
+import mx.com.qtx.cotizadorv1ds.core.ComponenteInvalidoException;
 import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
 import mx.com.qtx.cotizadorv1ds.core.ICotizador;
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
@@ -37,6 +39,30 @@ public class CotizadorTest {
 		cotizador.agregarComponente(7, monitor2);
 		try {
 			cotizador.eliminarComponente(null);
+		}
+	// Invocar servicio corporativo de manejo de errores
+		catch(ComponenteInvalidoException ex) {
+//			System.out.println(ex.getClass().getName());
+			Throwable causa = ex.getCause();
+			System.out.println("Mensaje:" + ex.getMessage());
+			if(causa == null)
+				System.out.println("Se ha invocado al servicio con un parámetro erróneo");
+			else {
+				System.out.println("causado por " + causa.getClass().getName() + " " + causa.getMessage());
+			}
+			//	ex.printStackTrace();
+				List.of(ex.getStackTrace())
+				          .stream()
+				          .map(stI->stI.getClassName() + ":" 
+				                  + stI.getLineNumber() 
+				                  + ", en " + stI.getMethodName())
+				          .forEach(x->System.out.println(x));
+		}
+		catch(NoSuchElementException ex) {
+//			System.out.println(ex.getClass().getName());
+			System.out.println("Mensaje:" + ex.getMessage());
+			System.out.println("Al parecer la implementación usada "
+					+ "no valida parámetros de entrada");
 		}
 		catch(Exception ex) {
 			System.out.println(ex.getClass().getName());

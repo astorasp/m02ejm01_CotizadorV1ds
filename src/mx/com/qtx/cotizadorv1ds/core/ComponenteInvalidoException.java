@@ -2,7 +2,7 @@ package mx.com.qtx.cotizadorv1ds.core;
 
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
 
-public class ComponenteInvalidoException extends RuntimeException {
+public class ComponenteInvalidoException extends Exception {
 	/**
 	 * 
 	 */
@@ -12,6 +12,11 @@ public class ComponenteInvalidoException extends RuntimeException {
 
 	public ComponenteInvalidoException(String message, Componente comp) {
 		super(message);
+		this.comp = comp;
+	}
+
+	public ComponenteInvalidoException(String message, Throwable cause, Componente comp) {
+		super(message, cause);
 		this.comp = comp;
 	}
 

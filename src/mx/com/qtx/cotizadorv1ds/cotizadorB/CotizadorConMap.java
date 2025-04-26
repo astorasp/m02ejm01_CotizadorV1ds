@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+import mx.com.qtx.cotizadorv1ds.core.ComponenteInvalidoException;
 import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
 import mx.com.qtx.cotizadorv1ds.core.DetalleCotizacion;
 import mx.com.qtx.cotizadorv1ds.core.ICotizador;
@@ -23,7 +24,8 @@ public class CotizadorConMap implements ICotizador {
 	}
 
 	@Override
-	public void eliminarComponente(String idComponente) {
+	public void eliminarComponente(String idComponente) throws ComponenteInvalidoException {
+		try {
     	   Componente llave = this.mapCompsYcants.keySet()
     			                    .stream()
     			                    .filter(k->k.getId().equals(idComponente))
@@ -31,7 +33,11 @@ public class CotizadorConMap implements ICotizador {
     			                     .get();
                
 		
-		this.mapCompsYcants.remove(llave);
+    	   this.mapCompsYcants.remove(llave);
+		}
+		catch(Exception ex) {
+			throw new ComponenteInvalidoException("Error subyacente", ex, null);
+		}
 	}
 
 	@Override
