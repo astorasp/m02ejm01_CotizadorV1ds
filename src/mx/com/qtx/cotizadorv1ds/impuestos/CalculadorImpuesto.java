@@ -2,10 +2,10 @@ package mx.com.qtx.cotizadorv1ds.impuestos;
 
 import java.math.BigDecimal;
 
-public abstract class CalculoImpuesto {
-    protected ICalculoImpuestoPais calculoImpuestoPais;
+public abstract class CalculadorImpuesto {
+    protected ICalculadorImpuestoPais calculoImpuestoPais;
 
-    protected CalculoImpuesto(ICalculoImpuestoPais calculoImpuestoPais) {
+    protected CalculadorImpuesto(ICalculadorImpuestoPais calculoImpuestoPais) {
         this.calculoImpuestoPais = calculoImpuestoPais;
     }
 

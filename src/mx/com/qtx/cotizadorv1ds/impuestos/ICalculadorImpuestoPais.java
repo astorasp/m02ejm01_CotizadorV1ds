@@ -2,6 +2,6 @@ package mx.com.qtx.cotizadorv1ds.impuestos;
 
 import java.math.BigDecimal;
 
-public interface ICalculoImpuestoPais {
+public interface ICalculadorImpuestoPais {
     BigDecimal calcularImpuestoPais(BigDecimal monto);
 }

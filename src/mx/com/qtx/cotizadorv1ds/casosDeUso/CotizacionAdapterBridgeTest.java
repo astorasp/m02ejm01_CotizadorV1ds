@@ -8,11 +8,11 @@ import mx.com.qtx.cotizadorv1ds.config.Config;
 import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
 import mx.com.qtx.cotizadorv1ds.core.ICotizador;
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
-import mx.com.qtx.cotizadorv1ds.impuestos.CalculoImpuesto;
-import mx.com.qtx.cotizadorv1ds.impuestos.CalculoImpuestoFederal;
-import mx.com.qtx.cotizadorv1ds.impuestos.CalculoImpuestoLocal;
-import mx.com.qtx.cotizadorv1ds.impuestos.CalculoImpuestoMexico;
-import mx.com.qtx.cotizadorv1ds.impuestos.CalculoImpuestosUsa;
+import mx.com.qtx.cotizadorv1ds.impuestos.CalculadorImpuesto;
+import mx.com.qtx.cotizadorv1ds.impuestos.CalculadorImpuestoFederal;
+import mx.com.qtx.cotizadorv1ds.impuestos.CalculadorImpuestoLocal;
+import mx.com.qtx.cotizadorv1ds.impuestos.CalculadorImpuestoMexico;
+import mx.com.qtx.cotizadorv1ds.impuestos.CalculadorImpuestosUsa;
 import mx.com.qtx.cotizadorv1ds.pedidos.ManejadorCreacionPedidos;
 
 /**
@@ -99,7 +99,7 @@ public class CotizacionAdapterBridgeTest {
      *     <li>Imprime los pedidos actualizados del manejador.</li>
      * </ol>
      *
-     * @param impuestos Lista de {@link CalculoImpuesto} a aplicar en la cotización.
+     * @param impuestos Lista de {@link CalculadorImpuesto} a aplicar en la cotización.
      *                  Define qué impuestos (y de qué jurisdicción) se calcularán.
      * @see #obtenerCotizador()
      * @see ICotizador#generarCotizacion(List)
@@ -107,18 +107,18 @@ public class CotizacionAdapterBridgeTest {
      * @see ManejadorCreacionPedidos#crearPedidoDesdeCotizacion(Cotizacion, String, int, int, LocalDate, LocalDate)
      * @see ManejadorCreacionPedidos#imprimirPedidos()
      */
-	private static void testGenerarCotizacion(List<CalculoImpuesto> impuestos) {
+	private static void testGenerarCotizacion(List<CalculadorImpuesto> impuestos) {
         ICotizador cotizador = obtenerCotizador();
         Cotizacion cotizacion = cotizador.generarCotizacion(impuestos);
 		cotizacion.emitirComoReporte();
         ManejadorCreacionPedidos manejador = new ManejadorCreacionPedidos();
         manejador.crearPedidoDesdeCotizacion(cotizacion, "PROV001",
              1, 1, LocalDate.now(), LocalDate.now().plusDays(2));
-        manejador.imprimirPedidos();
+        manejador.imprimirPedido();
 
         manejador.crearPedidoDesdeCotizacion(cotizacion,"PROV002",
             2, 3, LocalDate.now(), LocalDate.now().plusDays(4));
-        manejador.imprimirPedidos();
+        manejador.imprimirPedido();
 	}
 
     /**
@@ -131,11 +131,11 @@ public class CotizacionAdapterBridgeTest {
      * registrando el error pero permitiendo que el flujo de la aplicación continúe.
      * </p>
      *
-     * @param impuestos Lista de {@link CalculoImpuesto} a aplicar en la cotización.
+     * @param impuestos Lista de {@link CalculadorImpuesto} a aplicar en la cotización.
      * @see ManejadorCreacionPedidos#crearPedidoDesdeCotizacion(Cotizacion, String, int, int, LocalDate, LocalDate)
      * @see mx.com.qtx.cotizadorv1ds.pedidos.excepciones.ProveedorNoExisteExcepcion
      */
-    private static void testGenerarPedidoProveedorInexistente(List<CalculoImpuesto> impuestos) {
+    private static void testGenerarPedidoProveedorInexistente(List<CalculadorImpuesto> impuestos) {
         ICotizador cotizador = obtenerCotizador();
         Cotizacion cotizacion = cotizador.generarCotizacion(impuestos);
         ManejadorCreacionPedidos manejador = new ManejadorCreacionPedidos();
@@ -143,7 +143,7 @@ public class CotizacionAdapterBridgeTest {
         manejador.crearPedidoDesdeCotizacion(cotizacion, "PROV999",
              3, 1, LocalDate.now(), LocalDate.now().plusDays(5));
         // Esta línea podría no imprimir nada relevante si el pedido no se creó debido al error.
-        manejador.imprimirPedidos(); // Verificar si se imprime algo o si el manejador lo omitió.
+        manejador.imprimirPedido(); // Verificar si se imprime algo o si el manejador lo omitió.
     }
 
     /**
@@ -243,9 +243,9 @@ public class CotizacionAdapterBridgeTest {
      * @see CalculoImpuestoFederal
      * @see CalculoImpuestoMexico
      */
-    private static List<CalculoImpuesto> obtenerCalculoImpuestosMexico() {
-        return List.of(new CalculoImpuestoLocal(new CalculoImpuestoMexico()),
-            new CalculoImpuestoFederal(new CalculoImpuestoMexico()));
+    private static List<CalculadorImpuesto> obtenerCalculoImpuestosMexico() {
+        return List.of(new CalculadorImpuestoLocal(new CalculadorImpuestoMexico()),
+            new CalculadorImpuestoFederal(new CalculadorImpuestoMexico()));
     }
 
     /**
@@ -258,8 +258,8 @@ public class CotizacionAdapterBridgeTest {
      * @see CalculoImpuestoFederal
      * @see CalculoImpuestoMexico
      */
-    private static List<CalculoImpuesto> obtenerCalculoImpuestosMexicoFederal() {
-        return List.of(new CalculoImpuestoFederal(new CalculoImpuestoMexico()));
+    private static List<CalculadorImpuesto> obtenerCalculoImpuestosMexicoFederal() {
+        return List.of(new CalculadorImpuestoFederal(new CalculadorImpuestoMexico()));
     }
 
     /**
@@ -274,9 +274,9 @@ public class CotizacionAdapterBridgeTest {
      * @see CalculoImpuestoFederal
      * @see CalculoImpuestosUsa
      */
-    private static List<CalculoImpuesto> obtenerCalculoImpuestosUsa() {
-        return List.of(new CalculoImpuestoLocal(new CalculoImpuestosUsa()),
-            new CalculoImpuestoFederal(new CalculoImpuestosUsa()));
+    private static List<CalculadorImpuesto> obtenerCalculoImpuestosUsa() {
+        return List.of(new CalculadorImpuestoLocal(new CalculadorImpuestosUsa()),
+            new CalculadorImpuestoFederal(new CalculadorImpuestosUsa()));
     }
 
 	/**

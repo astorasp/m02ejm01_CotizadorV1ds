@@ -105,7 +105,7 @@ public class GestorPedidos {
      * Imprime en la consola la representación en cadena del último pedido generado.
      * Utiliza el método toString() de la clase Pedido para formatear la salida.
      */
-    public void imprimirPedido() {        
+    public void imprimirPedidoActual() {        
         System.out.println(" ");
         System.out.println(pedido.toString());
     }

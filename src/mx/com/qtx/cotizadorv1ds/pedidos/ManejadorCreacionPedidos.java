@@ -62,7 +62,7 @@ public class ManejadorCreacionPedidos {
      * Solicita al GestorPedidos interno que imprima el último pedido generado.
      * La salida se dirige a la consola estándar.
      */
-    public void imprimirPedidos() {
-        gestorPedidos.imprimirPedido();
+    public void imprimirPedido() {
+        gestorPedidos.imprimirPedidoActual();
     }
 }
