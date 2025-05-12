@@ -5,6 +5,12 @@ import java.util.List;
 import mx.com.qtx.cotizadorv1ds.config.SpringContextProvider;
 import mx.com.qtx.cotizadorv1ds.servicios.ComponenteServicio;
 
+/**
+ * Clase abstracta base para todos los componentes del sistema.
+ * Representa un componente genérico con propiedades básicas como identificador,
+ * descripción, marca, modelo, costo y precio base.
+ * Clases específicas como Monitor, DiscoDuro, TarjetaVideo y Pc heredan de esta clase.
+ */
 public abstract class Componente {
     protected String id;
     protected String descripcion;
@@ -17,7 +23,16 @@ public abstract class Componente {
 
     private static ComponenteServicio componenteServicio = SpringContextProvider.getBean(ComponenteServicio.class);
     
-    // Constructor
+    /**
+     * Constructor para crear un componente con sus propiedades básicas.
+     * 
+     * @param id Identificador único del componente
+     * @param descripcion Descripción detallada del componente
+     * @param marca Marca del componente
+     * @param modelo Modelo específico del componente
+     * @param costo Costo de adquisición del componente
+     * @param precioBase Precio base de venta del componente
+     */
     public Componente(String id, String descripcion, String marca, String modelo, 
                      BigDecimal costo, BigDecimal precioBase) {
         this.id = id;
@@ -48,16 +63,31 @@ public abstract class Componente {
     public void setPrecioBase(BigDecimal precioBase) { this.precioBase = precioBase; }
 
 
+    /**
+     * Obtiene la promoción aplicada al componente.
+     * 
+     * @return La promoción actual del componente o null si no tiene ninguna
+     */
 	public IPromocion getPromo() {
 		return promo;
 	}
 
+    /**
+     * Establece una promoción para este componente.
+     * 
+     * @param promo La promoción a aplicar al componente
+     */
 	public void setPromo(IPromocion promo) {
 		this.promo = promo;
 	}
 
 	// Métodos
-    public void mostrarCaracteristicas() { //¿Como despliega una pc?
+    /**
+     * Muestra en consola las características principales del componente.
+     * Incluye ID, categoría, descripción, marca, modelo, costo, precio base y utilidad.
+     * Este método puede ser sobrescrito por clases hijas para mostrar información específica.
+     */
+    public void mostrarCaracteristicas() {
         System.out.println("ID: " + id);
         System.out.println("Categoría: " + this.getCategoria());
         System.out.println("Descripción: " + descripcion);
@@ -69,10 +99,24 @@ public abstract class Componente {
                
     }
 
+    /**
+     * Calcula la utilidad del componente como la diferencia entre el precio base y el costo.
+     * 
+     * @return La utilidad calculada del componente
+     */
     public BigDecimal calcularUtilidad() {
         return precioBase.subtract(costo);
     }
 
+    /**
+     * Calcula el precio total de una cantidad específica de este componente.
+     * Si el componente tiene una promoción asignada, utiliza el cálculo de la promoción.
+     * Si no tiene promoción, multiplica el precio base por la cantidad.
+     * Este método es final para que no pueda ser sobrescrito por las clases hijas.
+     * 
+     * @param cantidadI Cantidad de unidades a cotizar
+     * @return El importe total de la cotización para la cantidad especificada
+     */
 	final public BigDecimal cotizar(int cantidadI) {
 		if(this.promo == null)
 			return this.precioBase.multiply(new BigDecimal(cantidadI));
@@ -80,14 +124,30 @@ public abstract class Componente {
 			return this.promo.calcularImportePromocion(cantidadI, this.precioBase);
 	}
 
+    /**
+     * Elimina este componente utilizando el servicio de componentes.
+     * Este método delega la operación de borrado al servicio correspondiente.
+     */
     public void borrarComponente() {
         componenteServicio.borrarComponente(this.id);
     }
 
+    /**
+     * Busca un componente por su identificador único.
+     * Este método estático permite buscar cualquier componente sin necesidad de una instancia.
+     * 
+     * @param id Identificador único del componente a buscar
+     * @return El componente encontrado o null si no existe
+     */
     public static Componente buscarComponente(String id) {
         return componenteServicio.buscarComponente(id);
     }
 
+    /**
+     * Guarda el componente en la base de datos.
+     * Si el componente es de tipo PC, utiliza un método específico para guardar
+     * la PC completa con sus subcomponentes. De lo contrario, guarda el componente simple.
+     */
     public void guardarComponente() {
         if(this instanceof Pc)
             componenteServicio.guardarPcCompleto(this);
@@ -95,20 +155,65 @@ public abstract class Componente {
             componenteServicio.guardarComponente(this);
     }
 
+	/**
+	 * Obtiene la categoría del componente.
+	 * Cada tipo específico de componente debe implementar este método para
+	 * proporcionar su categoría particular.
+	 * 
+	 * @return La categoría del componente como cadena de texto
+	 */
 	public abstract String getCategoria();
 	
+	/**
+	 * Método factory para crear un disco duro.
+	 * Este método estático facilita la creación de discos duros con los parámetros especificados.
+	 * 
+	 * @param id Identificador único del disco duro
+	 * @param descripcion Descripción detallada del disco duro
+	 * @param marca Marca del disco duro
+	 * @param modelo Modelo específico del disco duro
+	 * @param costo Costo de adquisición del disco duro
+	 * @param precioBase Precio base de venta del disco duro
+	 * @param capacidadAlm Capacidad de almacenamiento del disco duro
+	 * @return Un nuevo componente de tipo DiscoDuro
+	 */
 	public static Componente crearDiscoDuro(String id, String descripcion, String marca, String modelo, BigDecimal costo,
 			BigDecimal precioBase, String capacidadAlm) {
 		Componente disco = new DiscoDuro(id,descripcion,marca,modelo,costo,precioBase,capacidadAlm);
 		return disco;
 	}
 	
+	/**
+	 * Método factory para crear un monitor.
+	 * Este método estático facilita la creación de monitores con los parámetros especificados.
+	 * 
+	 * @param id Identificador único del monitor
+	 * @param descripcion Descripción detallada del monitor
+	 * @param marca Marca del monitor
+	 * @param modelo Modelo específico del monitor
+	 * @param costo Costo de adquisición del monitor
+	 * @param precioBase Precio base de venta del monitor
+	 * @return Un nuevo componente de tipo Monitor
+	 */
 	public static Componente crearMonitor(String id, String descripcion, String marca, String modelo, BigDecimal costo,
 			BigDecimal precioBase) {
 		Componente monitor = new Monitor(id,descripcion, marca, modelo, costo,precioBase);	
 		return monitor;
 	}
 
+	/**
+	 * Método factory para crear una tarjeta de video.
+	 * Este método estático facilita la creación de tarjetas de video con los parámetros especificados.
+	 * 
+	 * @param id Identificador único de la tarjeta de video
+	 * @param descripcion Descripción detallada de la tarjeta de video
+	 * @param marca Marca de la tarjeta de video
+	 * @param modelo Modelo específico de la tarjeta de video
+	 * @param costo Costo de adquisición de la tarjeta de video
+	 * @param precioBase Precio base de venta de la tarjeta de video
+	 * @param memoria Cantidad de memoria de la tarjeta de video
+	 * @return Un nuevo componente de tipo TarjetaVideo
+	 */
 	public static Componente crearTarjetaVideo(String id, String descripcion, String marca, String modelo, BigDecimal costo,
 			BigDecimal precioBase, String memoria) {
 		Componente tarjeta = new TarjetaVideo(id, descripcion, marca, modelo, costo,
@@ -116,6 +221,18 @@ public abstract class Componente {
 		return tarjeta;
 	}
 
+	/**
+	 * Método factory para crear una PC compuesta por varios subcomponentes.
+	 * Este método estático facilita la creación de PCs con los parámetros especificados.
+	 * Filtra los subcomponentes para asegurar que solo los componentes simples sean incluidos.
+	 * 
+	 * @param id Identificador único de la PC
+	 * @param descripcion Descripción detallada de la PC
+	 * @param marca Marca de la PC
+	 * @param modelo Modelo específico de la PC
+	 * @param subComponentes Lista de componentes que forman parte de la PC
+	 * @return Un nuevo componente de tipo Pc
+	 */
 	public static Componente crearPc(String id, String descripcion, String marca, String modelo, 
 			List<Componente> subComponentes) {
 		List<ComponenteSimple> lstDispositivos = subComponentes.stream()
@@ -126,6 +243,13 @@ public abstract class Componente {
 		return pc;
 	}
 	
+	/**
+	 * Obtiene un nuevo constructor de PCs (PcBuilder).
+	 * Este método implementa el patrón Builder para facilitar la construcción de PCs
+	 * de manera más fluida y con una sintaxis más clara.
+	 * 
+	 * @return Una nueva instancia de PcBuilder para construir PCs
+	 */
 	public static PcBuilder getPcBuilder() {
 		return new PcBuilder();
 	}

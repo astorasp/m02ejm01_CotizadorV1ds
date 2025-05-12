@@ -17,8 +17,6 @@ import mx.com.qtx.cotizadorv1ds.impuestos.CalculadorImpuestoMexico;
 import mx.com.qtx.cotizadorv1ds.impuestos.CalculadorImpuestosUsa;
 import mx.com.qtx.cotizadorv1ds.pedidos.ManejadorCreacionPedidos;
 import mx.com.qtx.cotizadorv1ds.pedidos.Proveedor;
-import mx.com.qtx.cotizadorv1ds.servicios.ComponenteServicio;
-import mx.com.qtx.cotizadorv1ds.servicios.CotizacionServicio;
 import mx.com.qtx.cotizadorv1ds.servicios.ProveedorServicio;
 
 /**
