@@ -19,7 +19,6 @@ public class CotizadorTest {
     public static void main(String[] args) {
 		System.out.println("*** Iniciando test ***");
 		CotizadorTest cotizadorTest = new CotizadorTest();
-	
 		
 		System.out.println(LocalDateTime.now().toString()+"Inicia testAgregarComponentes");
     	cotizadorTest.agregarComponente();
@@ -38,19 +37,20 @@ public class CotizadorTest {
 		
 		System.out.println(LocalDateTime.now().toString()+"***Inicia testGenerarCotizacion***");
 		cotizadorTest.testGenerarCotizacion();
-		System.out.println(LocalDateTime.now().toString()+"***Termina testGenerarCotizacion***");
+		System.out.println(LocalDateTime.now().toString()+"***Termina testGenerarCotizacion***");			
+	
 		
     }
 
 	private void testCreacionPC() {
 		System.out.println("*** testCreacionPC ***");
-    	Componente disco1 = Componente.crearDiscoDuro("D003", "Disco Seagate", "TechXYZ", "X200", 
+    	Componente disco1 = Componente.crearDiscoDuro("D004", "Disco Seagate", "TechXYZ", "X200", 
 	                new BigDecimal("1880.00"), new BigDecimal("2000.00"), "1TB");   
 		disco1.guardarComponente();
-       	Componente monitor = Componente.crearMonitor("M003", "Monitor 17 pulgadas", "Sony", "Z9000", 
+       	Componente monitor = Componente.crearMonitor("M004", "Monitor 17 pulgadas", "Sony", "Z9000", 
                 new BigDecimal("3200.00"), new BigDecimal("6000.00"));   
 		monitor.guardarComponente();
-        Componente tarjeta = Componente.crearTarjetaVideo("C003", "Tarjeta XYZ", "TechBrand", "X200", 
+        Componente tarjeta = Componente.crearTarjetaVideo("C004", "Tarjeta XYZ", "TechBrand", "X200", 
                 new BigDecimal("150.00"), new BigDecimal("200.00"), "16GB");
 		tarjeta.guardarComponente();
         
