@@ -2,6 +2,8 @@ package mx.com.qtx.cotizadorv1ds.core.componentes;
 import java.math.BigDecimal;
 import java.util.List;
 
+import mx.com.qtx.cotizadorv1ds.config.SpringContextProvider;
+import mx.com.qtx.cotizadorv1ds.servicios.ComponenteServicio;
 
 public abstract class Componente {
     protected String id;
@@ -12,6 +14,8 @@ public abstract class Componente {
     protected BigDecimal precioBase;
     
     protected IPromocion promo;
+
+    private static ComponenteServicio componenteServicio = SpringContextProvider.getBean(ComponenteServicio.class);
     
     // Constructor
     public Componente(String id, String descripcion, String marca, String modelo, 
@@ -76,23 +80,40 @@ public abstract class Componente {
 			return this.promo.calcularImportePromocion(cantidadI, this.precioBase);
 	}
 
+    public void borrarComponente() {
+        componenteServicio.borrarComponente(this.id);
+    }
+
+    public static Componente buscarComponente(String id) {
+        return componenteServicio.buscarComponente(id);
+    }
+
+    public void guardarComponente() {
+        if(this instanceof Pc)
+            componenteServicio.guardarPcCompleto(this);
+        else
+            componenteServicio.guardarComponente(this);
+    }
+
 	public abstract String getCategoria();
 	
 	public static Componente crearDiscoDuro(String id, String descripcion, String marca, String modelo, BigDecimal costo,
 			BigDecimal precioBase, String capacidadAlm) {
-		
-		return new DiscoDuro(id,descripcion,marca,modelo,costo,precioBase,capacidadAlm);
+		Componente disco = new DiscoDuro(id,descripcion,marca,modelo,costo,precioBase,capacidadAlm);
+		return disco;
 	}
 	
 	public static Componente crearMonitor(String id, String descripcion, String marca, String modelo, BigDecimal costo,
 			BigDecimal precioBase) {
-		return new Monitor(id,descripcion, marca, modelo, costo,precioBase);
+		Componente monitor = new Monitor(id,descripcion, marca, modelo, costo,precioBase);	
+		return monitor;
 	}
 
 	public static Componente crearTarjetaVideo(String id, String descripcion, String marca, String modelo, BigDecimal costo,
 			BigDecimal precioBase, String memoria) {
-		return new TarjetaVideo(id, descripcion, marca, modelo, costo,
+		Componente tarjeta = new TarjetaVideo(id, descripcion, marca, modelo, costo,
 				precioBase, memoria);
+		return tarjeta;
 	}
 
 	public static Componente crearPc(String id, String descripcion, String marca, String modelo, 
@@ -101,7 +122,8 @@ public abstract class Componente {
 				                                          .filter(cmpI->(cmpI instanceof ComponenteSimple))
 		                                                  .map(dispI -> (ComponenteSimple) dispI)
 		                                                  .toList();
-		return new Pc(id, descripcion, marca, modelo, lstDispositivos);
+		Componente pc = new Pc(id, descripcion, marca, modelo, lstDispositivos);
+		return pc;
 	}
 	
 	public static PcBuilder getPcBuilder() {

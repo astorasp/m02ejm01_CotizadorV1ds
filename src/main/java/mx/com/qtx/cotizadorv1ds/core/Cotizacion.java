@@ -7,7 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import mx.com.qtx.cotizadorv1ds.config.SpringContextProvider;
+import mx.com.qtx.cotizadorv1ds.servicios.CotizacionServicio;
+
 public class Cotizacion {
+	private static CotizacionServicio cotizacionServicio = SpringContextProvider.getBean(CotizacionServicio.class);
 	private static long nCotizaciones = 0;
 	
 	protected long num;
@@ -78,6 +82,10 @@ public class Cotizacion {
 		System.out.println(" ");
 		
 	}
+
+	public void guardarCotizacion() {
+		cotizacionServicio.guardarCotizacion(this);
+	}	
 	
 	protected void desplegarLineaCotizacion(DetalleCotizacion detI) {
 		System.out.println(String.format("%3d",detI.getCantidad()) + " " 

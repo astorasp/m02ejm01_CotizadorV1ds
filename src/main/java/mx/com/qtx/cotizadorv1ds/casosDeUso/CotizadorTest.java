@@ -9,58 +9,54 @@ import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
 import mx.com.qtx.cotizadorv1ds.core.ICotizador;
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
 import mx.com.qtx.cotizadorv1ds.cotizadorA.Cotizador;
-import mx.com.qtx.cotizadorv1ds.servicios.ComponenteServicio;
-import mx.com.qtx.cotizadorv1ds.servicios.CotizacionServicio;
 
 public class CotizadorTest {
 
-	private final ComponenteServicio componenteServicio;
-	private final CotizacionServicio cotizacionServicio;
 	public CotizadorTest() {
 		SpringContextProvider.initialize();
-		componenteServicio = SpringContextProvider.getBean(ComponenteServicio.class);
-		cotizacionServicio = SpringContextProvider.getBean(CotizacionServicio.class);
 	}
 
     public static void main(String[] args) {
 		System.out.println("*** Iniciando test ***");
 		CotizadorTest cotizadorTest = new CotizadorTest();
-		/*
-		System.out.println(LocalDateTime.now().toString()+"Inicia testCreacionPC");		
-    	cotizadorTest.testCreacionPC();
-		System.out.println(LocalDateTime.now().toString()+"Termina testCreacionPC");
-		*/
-
-		/*
+	
+		
 		System.out.println(LocalDateTime.now().toString()+"Inicia testAgregarComponentes");
     	cotizadorTest.agregarComponente();
 		System.out.println(LocalDateTime.now().toString()+"Termina testAgregarComponentes");		
-		*/
-		/*
+		
+		
 		System.out.println(LocalDateTime.now().toString()+"Inicia testEliminarComponente");
     	cotizadorTest.testEliminarComponente();
 		System.out.println(LocalDateTime.now().toString()+"Termina testEliminarComponente");				
-		*/
-
+		
+		
+		System.out.println(LocalDateTime.now().toString()+"Inicia testCreacionPC");		
+    	cotizadorTest.testCreacionPC();
+		System.out.println(LocalDateTime.now().toString()+"Termina testCreacionPC");
+		
+		
 		System.out.println(LocalDateTime.now().toString()+"***Inicia testGenerarCotizacion***");
 		cotizadorTest.testGenerarCotizacion();
 		System.out.println(LocalDateTime.now().toString()+"***Termina testGenerarCotizacion***");
+		
     }
 
 	private void testCreacionPC() {
 		System.out.println("*** testCreacionPC ***");
     	Componente disco1 = Componente.crearDiscoDuro("D003", "Disco Seagate", "TechXYZ", "X200", 
 	                new BigDecimal("1880.00"), new BigDecimal("2000.00"), "1TB");   
+		disco1.guardarComponente();
        	Componente monitor = Componente.crearMonitor("M003", "Monitor 17 pulgadas", "Sony", "Z9000", 
                 new BigDecimal("3200.00"), new BigDecimal("6000.00"));   
+		monitor.guardarComponente();
         Componente tarjeta = Componente.crearTarjetaVideo("C003", "Tarjeta XYZ", "TechBrand", "X200", 
                 new BigDecimal("150.00"), new BigDecimal("200.00"), "16GB");
+		tarjeta.guardarComponente();
         
     	Componente miPc = Componente.crearPc("PC007", "Laptop 15000 s300", "Dell", "Terminator",
     											List.of(disco1,monitor,tarjeta));
-
-		componenteServicio.guardarPcCompleto(miPc);
-		/*VER MANERA DE RECUPERAR LA INFO GUARDADA*/										
+		miPc.guardarComponente();
 		miPc.mostrarCaracteristicas();
 		
 	}
@@ -68,20 +64,18 @@ public class CotizadorTest {
 	private void agregarComponente() {
 		Componente monitor = Componente.crearMonitor("M005","Monitor 17 pulgadas","Samsung","Goliat-500",
 						new BigDecimal(1000), new BigDecimal(2000));
+		monitor.guardarComponente();
 		
 		Componente monitor2 = Componente.crearMonitor("M006","Monitor 15 pulgadas","Sony","VR-30",
 				new BigDecimal(1100), new BigDecimal(2000));
-
-		componenteServicio.guardarComponente(monitor);
-		componenteServicio.guardarComponente(monitor2);		
+		monitor2.guardarComponente();
 	}
 
 	private void testEliminarComponente() {
-		System.out.println("*** testEliminarComponente ***");
-
-		componenteServicio.borrarComponente("M005");
-		componenteServicio.borrarComponente("M006");
-		
+		Componente monitor = Componente.buscarComponente("M005");
+		Componente monitor2 = Componente.buscarComponente("M006");
+		monitor.borrarComponente();
+		monitor2.borrarComponente();
 	}
 
 	private void testMostrarCaracteristicas() {
@@ -107,7 +101,7 @@ public class CotizadorTest {
 		                            .agregarDisco("D002", "Disco Seagate", "TechXYZJr", "X100", 
 			             	                new BigDecimal("1000.00"), new BigDecimal("1600.00"), "500GB")
 		                            .build();
-		componenteServicio.guardarPcCompleto(miPc);									
+		miPc.guardarComponente();
 		miPc.mostrarCaracteristicas();
 		
 	}
@@ -130,7 +124,7 @@ public class CotizadorTest {
 		                            .agregarDisco("D003", "Disco Xtr 1TB", "Xtr-500", "Xtr", 
 			             	                new BigDecimal("2000.00"), new BigDecimal("2600.00"), "1TB")
 		                            .build();
-		componenteServicio.guardarPcCompleto(miPc);									
+		miPc.guardarComponente();
 		miPc.mostrarCaracteristicas();
 		
 	}
@@ -147,7 +141,7 @@ public class CotizadorTest {
 		                            .agregarTarjetaVideo("C001", "Tarjeta XYZ", "TechBrand", "X200", 
 		                                 new BigDecimal("150.00"), new BigDecimal("200.00"), "16GB")
 		                            .build();
-		componenteServicio.guardarPcCompleto(miPc);
+		miPc.guardarComponente();
 		miPc.mostrarCaracteristicas();
 		
 	}
@@ -156,41 +150,41 @@ public class CotizadorTest {
 		
 		ICotizador cotizador = getCotizadorActual();
 		
-		Componente monitor = Componente.crearMonitor("M001","Monitor 17 pulgadas","Samsung","Goliat-500",
+		Componente monitor = Componente.crearMonitor("M010","Monitor 17 pulgadas","Samsung","Goliat-500",
 						new BigDecimal(1000), new BigDecimal(2000));
 		cotizador.agregarComponente(1, monitor);
-		componenteServicio.guardarComponente(monitor);
+		monitor.guardarComponente();
 		
-		Componente monitor2 = Componente.crearMonitor("M022","Monitor 15 pulgadas","Sony","VR-30",
+		Componente monitor2 = Componente.crearMonitor("M011","Monitor 15 pulgadas","Sony","VR-30",
 				new BigDecimal(1100), new BigDecimal(2000));
-		componenteServicio.guardarComponente(monitor2);
+		monitor2.guardarComponente();
 		cotizador.agregarComponente(4, monitor2);
 		cotizador.agregarComponente(7, monitor2);
 		
-		Componente disco = Componente.crearDiscoDuro("D-23", "Disco estado sólido", "Seagate", "T-455", new BigDecimal(500), 
+		Componente disco = Componente.crearDiscoDuro("D010", "Disco estado sólido", "Seagate", "T-455", new BigDecimal(500), 
 				new BigDecimal(1000), "2TB");
-		componenteServicio.guardarComponente(disco);
+		disco.guardarComponente();
 		cotizador.agregarComponente(10, disco);
 	
-	    Componente tarjeta = Componente.crearTarjetaVideo("C0XY", "Tarjeta THOR", "TechBrand", "X200-34", 
+	    Componente tarjeta = Componente.crearTarjetaVideo("C010", "Tarjeta THOR", "TechBrand", "X200-34", 
 	            new BigDecimal("150.00"), new BigDecimal("300.00"), "8GB");
-		componenteServicio.guardarComponente(tarjeta);	
+		tarjeta.guardarComponente();	
 		cotizador.agregarComponente(10, tarjeta);
 	    
-    	Componente discoPc = Componente.crearDiscoDuro("D001", "Disco Seagate", "TechXYZ", "X200", 
+    	Componente discoPc = Componente.crearDiscoDuro("D011", "Disco Seagate", "TechXYZ", "X200", 
                 new BigDecimal("1880.00"), new BigDecimal("2000.00"), "1TB");   
-	   	Componente monitorPc = Componente.crearMonitor("M001", "Monitor 17 pulgadas", "Sony", "Z9000", 
+	   	Componente monitorPc = Componente.crearMonitor("M012", "Monitor 17 pulgadas", "Sony", "Z9000", 
 	            new BigDecimal("3200.00"), new BigDecimal("6000.00"));   
-	    Componente tarjetaPc = Componente.crearTarjetaVideo("C001", "Tarjeta XYZ", "TechBrand", "X200", 
+	    Componente tarjetaPc = Componente.crearTarjetaVideo("C012", "Tarjeta XYZ", "TechBrand", "X200", 
 	            new BigDecimal("150.00"), new BigDecimal("200.00"), "16GB");
 	    
-		Componente miPc = Componente.crearPc("PC011", "Laptop 15000 s300", "Dell", "Terminator",
+		Componente miPc = Componente.crearPc("PC010", "Laptop 15000 s300", "Dell", "Terminator",
 											List.of(discoPc,monitorPc,tarjetaPc));
-		componenteServicio.guardarPcCompleto(miPc);
+		miPc.guardarComponente();
 		cotizador.agregarComponente(1, miPc);
-		Cotizacion cotizacion = cotizador.generarCotizacion(null);
-		cotizacionServicio.guardarCotizacion(cotizacion);
-		cotizacion.emitirComoReporte();
+		Cotizacion cotizacion = cotizador.generarCotizacion(null);		
+		cotizacion.guardarCotizacion();
+		cotizacion.emitirComoReporte();		
 	}
 
 	private static ICotizador getCotizadorActual() {

@@ -117,4 +117,9 @@ public class ComponenteServicio {
             pcPartesRepo.save(pcParte);
         }
     }
+
+
+    public Componente buscarComponente(String id) {
+        return ComponenteEntityConverter.convertToComponente(compRepo.findById(id).orElse(null));
+    }   
 }

@@ -44,13 +44,9 @@ import mx.com.qtx.cotizadorv1ds.servicios.ProveedorServicio;
  */
 public class CotizacionAdapterBridgeTest {
 
-    private final ComponenteServicio componenteServicio;
-    private final CotizacionServicio cotizacionServicio;
     private final ProveedorServicio proveedorServicio;
     public CotizacionAdapterBridgeTest() {
         SpringContextProvider.initialize();
-        componenteServicio = SpringContextProvider.getBean(ComponenteServicio.class);
-        cotizacionServicio = SpringContextProvider.getBean(CotizacionServicio.class);
         proveedorServicio = SpringContextProvider.getBean(ProveedorServicio.class);
     }
     /**
@@ -103,6 +99,7 @@ public class CotizacionAdapterBridgeTest {
 	private void testGenerarCotizacion(List<CalculadorImpuesto> impuestos) {
         ICotizador cotizador = obtenerCotizador();
         Cotizacion cotizacion = cotizador.generarCotizacion(impuestos);
+        cotizacion.guardarCotizacion();
 		cotizacion.emitirComoReporte();
         ManejadorCreacionPedidos manejador = new ManejadorCreacionPedidos();
         Proveedor proveedor = proveedorServicio.buscarPorClave("DIGI008");
@@ -140,23 +137,23 @@ public class CotizacionAdapterBridgeTest {
 
 		Componente monitor = Componente.crearMonitor("M031","Monitor 17 pulgadas","Samsung","Goliat-500",
 						new BigDecimal(1000), new BigDecimal(2000));
-		componenteServicio.guardarComponente(monitor);
+        monitor.guardarComponente();
 		cotizador.agregarComponente(1, monitor);
 
 		Componente monitor2 = Componente.crearMonitor("M032","Monitor 15 pulgadas","Sony","VR-30",
 				new BigDecimal(1100), new BigDecimal(2000));
-		componenteServicio.guardarComponente(monitor2);
+		monitor2.guardarComponente();
 		cotizador.agregarComponente(4, monitor2);
 		cotizador.agregarComponente(7, monitor2);
 
 		Componente disco = Componente.crearDiscoDuro("D-30", "Disco estado sólido", "Seagate", "T-455", new BigDecimal(500),
 				new BigDecimal(1000), "2TB");
-		componenteServicio.guardarComponente(disco);
+		disco.guardarComponente();
 		cotizador.agregarComponente(10, disco);
 
 	    Componente tarjeta = Componente.crearTarjetaVideo("C034", "Tarjeta THOR", "TechBrand", "X200-34",
 	            new BigDecimal("150.00"), new BigDecimal("300.00"), "8GB");
-		componenteServicio.guardarComponente(tarjeta);
+		tarjeta.guardarComponente();
 		cotizador.agregarComponente(10, tarjeta);
 
     	Componente discoPc = Componente.crearDiscoDuro("D030", "Disco Seagate", "TechXYZ", "X200",
@@ -168,62 +165,7 @@ public class CotizacionAdapterBridgeTest {
 
 		Componente miPc = Componente.crearPc("PC030", "Laptop 15000 s300", "Dell", "Terminator",
 												List.of(discoPc,monitorPc,tarjetaPc));
-		componenteServicio.guardarPcCompleto(miPc);
-		cotizador.agregarComponente(1, miPc);
-		return cotizador;
-	}
-
-    	/**
-     * Crea y devuelve una instancia de {@link ICotizador} configurada con datos de ejemplo (mock).
-     * <p>
-     * Agrega varios componentes como monitores, discos duros, tarjetas de video y una PC ensamblada
-     * utilizando los métodos de fábrica de {@link Componente} y el método
-     * {@link ICotizador#agregarComponente(int, Componente)}.
-     * </p>
-     *
-     * @return Una instancia de {@link ICotizador} lista para generar una cotización con componentes de prueba.
-     * @see #getCotizadorActual()
-     * @see ICotizador#agregarComponente(int, Componente)
-     * @see Componente#crearMonitor(String, String, String, String, BigDecimal, BigDecimal)
-     * @see Componente#crearDiscoDuro(String, String, String, String, BigDecimal, BigDecimal, String)
-     * @see Componente#crearTarjetaVideo(String, String, String, String, BigDecimal, BigDecimal, String)
-     * @see Componente#crearPc(String, String, String, String, List)
-     */
-	private ICotizador obtenerCotizador2()
-	{
-		ICotizador cotizador = getCotizadorActual();
-
-		Componente monitor = Componente.crearMonitor("M040","Monitor 17 pulgadas","Samsung","Goliat-500",
-						new BigDecimal(1000), new BigDecimal(2000));
-		componenteServicio.guardarComponente(monitor);
-		cotizador.agregarComponente(1, monitor);
-
-		Componente monitor2 = Componente.crearMonitor("M041","Monitor 15 pulgadas","Sony","VR-30",
-				new BigDecimal(1100), new BigDecimal(2000));
-		componenteServicio.guardarComponente(monitor2);
-		cotizador.agregarComponente(4, monitor2);
-		cotizador.agregarComponente(7, monitor2);
-
-		Componente disco = Componente.crearDiscoDuro("D-42", "Disco estado sólido", "Seagate", "T-455", new BigDecimal(500),
-				new BigDecimal(1000), "2TB");
-		componenteServicio.guardarComponente(disco);
-		cotizador.agregarComponente(10, disco);
-
-	    Componente tarjeta = Componente.crearTarjetaVideo("C042", "Tarjeta THOR", "TechBrand", "X200-34",
-	            new BigDecimal("150.00"), new BigDecimal("300.00"), "8GB");
-		componenteServicio.guardarComponente(tarjeta);
-		cotizador.agregarComponente(10, tarjeta);
-
-    	Componente discoPc = Componente.crearDiscoDuro("D042", "Disco Seagate", "TechXYZ", "X200",
-                new BigDecimal("1880.00"), new BigDecimal("2000.00"), "1TB");
-	   	Componente monitorPc = Componente.crearMonitor("M042", "Monitor 17 pulgadas", "Sony", "Z9000",
-	            new BigDecimal("3200.00"), new BigDecimal("6000.00"));
-	    Componente tarjetaPc = Componente.crearTarjetaVideo("C042", "Tarjeta XYZ", "TechBrand", "X200",
-	            new BigDecimal("150.00"), new BigDecimal("200.00"), "16GB");
-
-		Componente miPc = Componente.crearPc("PC042", "Laptop 15000 s300", "Dell", "Terminator",
-												List.of(discoPc,monitorPc,tarjetaPc));
-		componenteServicio.guardarPcCompleto(miPc);
+		miPc.guardarComponente();
 		cotizador.agregarComponente(1, miPc);
 		return cotizador;
 	}
