@@ -1,4 +1,4 @@
-# Cotizador y Generador de Pedidos Modulo 2
+# Cotizador y Generador de Pedidos Modulo 3
 
 Este proyecto implementa un sistema completo para cotizar componentes (como hardware de computadora), generar pedidos basados en esas cotizaciones y persistir la información en una base de datos.
 
