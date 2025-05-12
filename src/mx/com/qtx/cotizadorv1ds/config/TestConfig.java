@@ -2,7 +2,7 @@ package mx.com.qtx.cotizadorv1ds.config;
 
 import java.util.List;
 
-import mx.com.qtx.cotizadorv1ds.core.ICotizador;
+import mx.com.qtx.cotizadorv1ds.core.cotizaciones.ICotizador;
 
 public class TestConfig {
 

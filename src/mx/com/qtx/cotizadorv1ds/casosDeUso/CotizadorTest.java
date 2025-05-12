@@ -5,19 +5,19 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import mx.com.qtx.cotizadorv1ds.config.Config;
-import mx.com.qtx.cotizadorv1ds.core.ComponenteInvalidoException;
-import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
-import mx.com.qtx.cotizadorv1ds.core.ICotizador;
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
+import mx.com.qtx.cotizadorv1ds.core.cotizaciones.ComponenteInvalidoException;
+import mx.com.qtx.cotizadorv1ds.core.cotizaciones.Cotizacion;
+import mx.com.qtx.cotizadorv1ds.core.cotizaciones.ICotizador;
 
 public class CotizadorTest {
     public static void main(String[] args) {
 //    	testCreacionPC();
     	
 //    	testAgregarComponentes();
-    	testEliminarComponente();
+//    	testEliminarComponente();
     	
-//    	testGenerarCotizacion();
+    	testGenerarCotizacion();
 //    	testMostrarCaracteristicas();
     	
 //    	testCreacionPcOk_conPcBuilder();

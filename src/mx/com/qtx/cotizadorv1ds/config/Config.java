@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
-import mx.com.qtx.cotizadorv1ds.core.ICotizador;
+import mx.com.qtx.cotizadorv1ds.core.cotizaciones.ICotizador;
 
 public class Config {
 	

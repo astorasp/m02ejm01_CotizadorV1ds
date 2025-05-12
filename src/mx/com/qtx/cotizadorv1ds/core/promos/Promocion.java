@@ -1,4 +1,4 @@
-package mx.com.qtx.cotizadorv1ds.promos;
+package mx.com.qtx.cotizadorv1ds.core.promos;
 
 import java.math.BigDecimal;
 import java.util.Map;

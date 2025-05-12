@@ -1,4 +1,4 @@
-package mx.com.qtx.cotizadorv1ds.core;
+package mx.com.qtx.cotizadorv1ds.core.cotizaciones;
 
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
 

@@ -1,7 +1,7 @@
 package mx.com.qtx.cotizadorv1ds.cotizadorB;
 
-import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
-import mx.com.qtx.cotizadorv1ds.core.DetalleCotizacion;
+import mx.com.qtx.cotizadorv1ds.core.cotizaciones.Cotizacion;
+import mx.com.qtx.cotizadorv1ds.core.cotizaciones.DetalleCotizacion;
 
 public class CotizacionFmtoB extends Cotizacion {
 	

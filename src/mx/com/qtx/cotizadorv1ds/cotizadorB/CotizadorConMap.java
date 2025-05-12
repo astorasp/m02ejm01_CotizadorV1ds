@@ -4,11 +4,11 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
-import mx.com.qtx.cotizadorv1ds.core.ComponenteInvalidoException;
-import mx.com.qtx.cotizadorv1ds.core.Cotizacion;
-import mx.com.qtx.cotizadorv1ds.core.DetalleCotizacion;
-import mx.com.qtx.cotizadorv1ds.core.ICotizador;
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
+import mx.com.qtx.cotizadorv1ds.core.cotizaciones.ComponenteInvalidoException;
+import mx.com.qtx.cotizadorv1ds.core.cotizaciones.Cotizacion;
+import mx.com.qtx.cotizadorv1ds.core.cotizaciones.DetalleCotizacion;
+import mx.com.qtx.cotizadorv1ds.core.cotizaciones.ICotizador;
 
 public class CotizadorConMap implements ICotizador {
 	private Map<Componente,Integer> mapCompsYcants;
