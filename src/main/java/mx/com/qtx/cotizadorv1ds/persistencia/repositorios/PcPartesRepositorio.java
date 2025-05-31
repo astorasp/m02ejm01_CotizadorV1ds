@@ -5,17 +5,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import mx.com.qtx.cotizadorv1ds.persistencia.entidades.PcPartes;
-import mx.com.qtx.cotizadorv1ds.persistencia.entidades.PcPartes.PcPartesId;
+import mx.com.qtx.cotizadorv1ds.persistencia.entidades.PcParte;
+import mx.com.qtx.cotizadorv1ds.persistencia.entidades.PcParte.PcPartesId;
 
 import java.util.List;
 
 @Repository
-public interface PcPartesRepositorio extends JpaRepository<PcPartes, PcPartesId> {
+public interface PcPartesRepositorio extends JpaRepository<PcParte, PcPartesId> {
     
     // Encontrar componentes por tipo para un PC específico
     @Query("SELECT p FROM PcPartes p WHERE p.idPc = :idPc AND p.componente.tipoComponente.nombre = :tipoComponente")
-    List<PcPartes> findByPcAndTipoComponente(
+    List<PcParte> findByPcAndTipoComponente(
         @Param("idPc") String idPc, 
         @Param("tipoComponente") String tipoComponente
     );

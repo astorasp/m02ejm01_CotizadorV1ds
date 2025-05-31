@@ -38,9 +38,19 @@ public class Componente {
     @Column(name = "precio_base")
     private BigDecimal precioBase;
     
+    @Column(name = "capacidad_alm")
+    private String capacidadAlm;
+    
+    @Column(name = "memoria")
+    private String memoria;
+    
     @ManyToOne
     @JoinColumn(name = "id_tipo_componente")
     private TipoComponente tipoComponente;
+    
+    @ManyToOne
+    @JoinColumn(name = "id_promocion")
+    private Promocion promocion;
     
     @OneToMany(mappedBy = "componente")
     private List<DetalleCotizacion> detallesCotizacion = new ArrayList<>();
@@ -102,12 +112,36 @@ public class Componente {
         this.precioBase = precioBase;
     }
     
+    public String getCapacidadAlm() {
+        return capacidadAlm;
+    }
+    
+    public void setCapacidadAlm(String capacidadAlm) {
+        this.capacidadAlm = capacidadAlm;
+    }
+    
+    public String getMemoria() {
+        return memoria;
+    }
+    
+    public void setMemoria(String memoria) {
+        this.memoria = memoria;
+    }
+    
     public TipoComponente getTipoComponente() {
         return tipoComponente;
     }
     
     public void setTipoComponente(TipoComponente tipoComponente) {
         this.tipoComponente = tipoComponente;
+    }
+    
+    public Promocion getPromocion() {
+        return promocion;
+    }
+    
+    public void setPromocion(Promocion promocion) {
+        this.promocion = promocion;
     }
     
     public List<DetalleCotizacion> getDetallesCotizacion() {

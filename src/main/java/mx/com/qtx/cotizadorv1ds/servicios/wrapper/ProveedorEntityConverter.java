@@ -1,12 +1,8 @@
 package mx.com.qtx.cotizadorv1ds.servicios.wrapper;
-
-import org.springframework.stereotype.Component;
-
 /**
  * Conversor para transformar objetos Proveedor del dominio de negocio a entidades Proveedor 
  * para persistencia y viceversa.
  */
-@Component
 public class ProveedorEntityConverter {
 
     /**

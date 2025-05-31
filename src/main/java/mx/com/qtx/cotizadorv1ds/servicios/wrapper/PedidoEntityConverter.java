@@ -1,11 +1,9 @@
 package mx.com.qtx.cotizadorv1ds.servicios.wrapper;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
 
 import mx.com.qtx.cotizadorv1ds.persistencia.entidades.Componente;
 import mx.com.qtx.cotizadorv1ds.persistencia.entidades.DetallePedido;
@@ -18,7 +16,6 @@ import mx.com.qtx.cotizadorv1ds.persistencia.repositorios.ProveedorRepositorio;
  * Maneja la conversión bidireccional entre mx.com.qtx.cotizadorv1ds.pedidos.Pedido y 
  * mx.com.qtx.cotizadorv1ds.persistencia.entidades.Pedido, incluyendo sus respectivos detalles.
  */
-@Component
 public class PedidoEntityConverter {
 
     /**
