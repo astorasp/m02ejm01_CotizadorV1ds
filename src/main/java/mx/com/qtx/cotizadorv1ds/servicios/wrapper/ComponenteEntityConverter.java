@@ -3,10 +3,6 @@ package mx.com.qtx.cotizadorv1ds.servicios.wrapper;
 import java.math.BigDecimal;
 
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
-import mx.com.qtx.cotizadorv1ds.core.componentes.DiscoDuro;
-import mx.com.qtx.cotizadorv1ds.core.componentes.PcBuilder;
-import mx.com.qtx.cotizadorv1ds.core.componentes.TarjetaVideo;
-import mx.com.qtx.cotizadorv1ds.core.componentes.TipoComponenteEnum;
 
 /**
  * Clase utilitaria para convertir objetos Componente del dominio a entidades Componente de persistencia
@@ -46,14 +42,6 @@ public class ComponenteEntityConverter {
         compEntity.setModelo(compCore.getModelo());
         compEntity.setCosto(compCore.getCosto());
         compEntity.setPrecioBase(compCore.getPrecioBase());
-        if(compCore instanceof DiscoDuro) {
-            DiscoDuro disco = (DiscoDuro) compCore;
-            compEntity.setCapacidadAlm(disco.getCapacidadAlm());
-        }
-        if(compCore instanceof TarjetaVideo) {
-            TarjetaVideo tarjeta = (TarjetaVideo) compCore;
-            compEntity.setMemoria(tarjeta.getMemoria());
-        }
         
         // El tipo de componente deberá ser asignado si es necesario en la lógica de negocio específica
         
@@ -89,8 +77,7 @@ public class ComponenteEntityConverter {
         BigDecimal precioBase = compEntity.getPrecioBase();
         
         // Determinar el tipo de componente y crear la instancia adecuada
-        if (compEntity.getTipoComponente().getNombre()
-                .equals(TipoComponenteEnum.DISCO_DURO.name())) {
+        if (compEntity instanceof mx.com.qtx.cotizadorv1ds.persistencia.entidades.DiscoDuro) {
             // Es un disco duro
             mx.com.qtx.cotizadorv1ds.persistencia.entidades.DiscoDuro discoEntity = 
                     (mx.com.qtx.cotizadorv1ds.persistencia.entidades.DiscoDuro) compEntity;
@@ -98,28 +85,18 @@ public class ComponenteEntityConverter {
             // Usar el método factory para crear el objeto
             return Componente.crearDiscoDuro(id, descripcion, marca, modelo, costo, precioBase, capacidad);
             
-        } else if (compEntity.getTipoComponente().getNombre()
-                .equals(TipoComponenteEnum.TARJETA_VIDEO.name())) {
+        } else if (compEntity instanceof mx.com.qtx.cotizadorv1ds.persistencia.entidades.TarjetaVideo) {
             // Es una tarjeta de video
             mx.com.qtx.cotizadorv1ds.persistencia.entidades.TarjetaVideo tarjetaEntity = 
                     (mx.com.qtx.cotizadorv1ds.persistencia.entidades.TarjetaVideo) compEntity;
             String memoria = tarjetaEntity.getMemoria();
             // Usar el método factory para crear el objeto
-            return Componente
-                .crearTarjetaVideo(id, descripcion, marca, modelo, costo, precioBase, memoria);
+            return Componente.crearTarjetaVideo(id, descripcion, marca, modelo, costo, precioBase, memoria);
             
-        } else if (compEntity.getTipoComponente().getNombre()
-                .equals(TipoComponenteEnum.MONITOR.name())) {
+        } else {
             // Para otros tipos (Monitor o componentes genéricos)
             // Usar el método factory para crear un Monitor por defecto como tipo más simple
             return Componente.crearMonitor(id, descripcion, marca, modelo, costo, precioBase);
-        }
-        else {
-            PcBuilder pcBuilder = Componente.getPcBuilder();
-            pcBuilder.definirId(id)
-                .definirDescripcion(descripcion)
-                .definirMarcaYmodelo(marca, modelo);
-            return pcBuilder.build();
         }
         
         // Nota: La conversión para PC's compuestas requeriría implementación adicional

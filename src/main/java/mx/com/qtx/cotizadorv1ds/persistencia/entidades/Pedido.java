@@ -34,9 +34,6 @@ public class Pedido {
     @Column(name = "nivel_surtido")
     private Integer nivelSurtido;
     
-    @Column(name = "total")
-    private BigDecimal total;
-    
     @ManyToOne
     @JoinColumn(name = "cve_proveedor")
     private Proveedor proveedor;
@@ -80,14 +77,6 @@ public class Pedido {
     
     public void setNivelSurtido(Integer nivelSurtido) {
         this.nivelSurtido = nivelSurtido;
-    }
-    
-    public BigDecimal getTotal() {
-        return total;
-    }
-    
-    public void setTotal(BigDecimal total) {
-        this.total = total;
     }
     
     public Proveedor getProveedor() {

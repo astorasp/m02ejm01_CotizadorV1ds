@@ -12,9 +12,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "copc_parte")
-@IdClass(PcParte.PcPartesId.class)
-public class PcParte implements Serializable {
+@Table(name = "copc_partes")
+@IdClass(PcPartes.PcPartesId.class)
+public class PcPartes implements Serializable {
     
     private static final long serialVersionUID = 1L;
     
@@ -31,11 +31,11 @@ public class PcParte implements Serializable {
     private Componente componente;
     
     // Constructores
-    public PcParte() {
+    public PcPartes() {
         // Constructor vacío requerido por JPA
     }
     
-    public PcParte(String idPc, String idComponente) {
+    public PcPartes(String idPc, String idComponente) {
         this.idPc = idPc;
         this.idComponente = idComponente;
     }
@@ -69,7 +69,7 @@ public class PcParte implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PcParte pcPartes = (PcParte) o;
+        PcPartes pcPartes = (PcPartes) o;
         return Objects.equals(idPc, pcPartes.idPc) && 
                Objects.equals(idComponente, pcPartes.idComponente);
     }

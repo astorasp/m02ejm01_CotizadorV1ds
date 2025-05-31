@@ -17,71 +17,55 @@ INSERT INTO coproveedor (cve, nombre, razon_social) VALUES
 ('TECH009', 'Tech Imports', 'Tech Imports México S.A. de C.V.'),
 ('HARD010', 'Hardware Depot', 'Hardware Depot Internacional S.A.');
 
--- Insertar promociones
-INSERT INTO copromocion (id_promocion, descripcion, nombre, vigencia_desde, vigencia_hasta) VALUES
-(1, 'Sin promoción', 'Regular', '2025-01-01', '2030-12-31'),
-(2, 'Descuento por cantidad en monitores', 'Monitores por Volumen', '2025-03-01', '2025-05-31'),
-(3, 'Promoción compra 3 paga 2 en tarjetas de video', 'Tarjetas 3x2', '2025-04-01', '2025-04-30'),
-(4, 'Descuento del 20% en componentes para PC', 'PC Componentes', '2025-05-01', '2025-07-31'),
-(5, 'Promoción compra 3 paga 2 en discos duros', 'HDD 3x2', '2025-06-01', '2025-06-30');
-
--- Insertar detalles de promoción
-INSERT INTO codetalle_promocion (id_detalle_promocion, es_base, llevent, nombre, paguen, porc_dcto_plano, tipo_prom_acumulable, tipo_prom_base, id_promocion) VALUES
--- Promoción Regular (sin promoción)
-(1, TRUE, 1, 'Precio Regular', 1, 0.00, NULL, 'BASE', 1),
-
--- Promoción de Monitores por Volumen (descuento por cantidad)
-(2, TRUE, 1, 'Descuento por Volumen Monitores', 1, 0.00, NULL, 'BASE', 2),
-
--- Promoción Tarjetas 3x2 (compra N lleva M)
-(3, TRUE, 3, 'Compra 3 Paga 2 - Tarjetas', 2, 33.33, NULL, 'BASE', 3),
-
--- Promoción PC Componentes (descuento general)
-(4, TRUE, 1, 'Descuento en PC Componentes', 1, 20.00, NULL, 'BASE', 4),
-
--- Promoción HDD 3x2 (compra N lleva M)
-(5, TRUE, 3, 'Compra 3 Paga 2 - Discos', 2, 33.33, NULL, 'BASE', 5);
-
--- Insertar detalles de promoción por documento y cantidad
-INSERT INTO codetalle_prom_dscto_x_cant (num_dscto, cantidad, dscto, num_det_promocion, num_promocion) VALUES
--- Detalle Promoción Monitores por Volumen - escalado por cantidad
-(1, 3, 5.00, 2, 2),  -- 5% para 3-5 monitores
-(2, 6, 10.00, 2, 2); -- 10% para 6+ monitores
-
 -- Insertar componentes - Monitores
-INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente, id_promocion) VALUES
-('MON001', 'Monitor 24 pulgadas FullHD', 'LG', 'MN24F', 2500.00, 3500.00, 3, 2),
-('MON002', 'Monitor 27 pulgadas 4K', 'Samsung', 'S27K', 4200.00, 5900.00, 3, 2),
-('MON003', 'Monitor 32 pulgadas Curvo', 'Dell', 'D32C', 5100.00, 6800.00, 3, 1),
-('MON004', 'Monitor Gamer 24" 144Hz', 'ASUS', 'VG24', 3800.00, 5200.00, 3, 1),
-('MON005', 'Monitor UltraWide 29"', 'LG', 'UW29', 4500.00, 6300.00, 3, 2);
+INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente) VALUES('MON001', 'Monitor 24 pulgadas FullHD', 'LG', 'MN24F', 2500.00, 3500.00, 3);
+INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente) VALUES('MON002', 'Monitor 27 pulgadas 4K', 'Samsung', 'S27K', 4200.00, 5900.00, 3);
+INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente) VALUES('MON003', 'Monitor 32 pulgadas Curvo', 'Dell', 'D32C', 5100.00, 6800.00, 3);
+INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente) VALUES('MON004', 'Monitor Gamer 24" 144Hz', 'ASUS', 'VG24', 3800.00, 5200.00, 3);
+INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente) VALUES('MON005', 'Monitor UltraWide 29"', 'LG', 'UW29', 4500.00, 6300.00, 3);
 
 -- Insertar componentes - Discos Duros
-INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente, capacidad_alm, id_promocion) VALUES
-('HDD001', 'Disco Duro 1TB SATA', 'Western Digital', 'WD10EZEX', 850.00, 1200.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '1TB', 5),
-('HDD002', 'SSD 500GB SATA', 'Samsung', 'EVO860', 1200.00, 1800.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '500GB', 1),
-('HDD003', 'NVMe SSD 1TB', 'Kingston', 'KC2500', 2300.00, 3100.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '1TB', 5),
-('HDD004', 'Disco Duro 2TB SATA', 'Seagate', 'Barracuda', 1100.00, 1600.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '2TB', 1),
-('HDD005', 'SSD 1TB SATA', 'Crucial', 'MX500', 1800.00, 2400.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '1TB', 5);
+INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente) VALUES
+('HDD001', 'Disco Duro 1TB SATA', 'Western Digital', 'WD10EZEX', 850.00, 1200.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO')),
+('HDD002', 'SSD 500GB SATA', 'Samsung', 'EVO860', 1200.00, 1800.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO')),
+('HDD003', 'NVMe SSD 1TB', 'Kingston', 'KC2500', 2300.00, 3100.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO')),
+('HDD004', 'Disco Duro 2TB SATA', 'Seagate', 'Barracuda', 1100.00, 1600.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO')),
+('HDD005', 'SSD 1TB SATA', 'Crucial', 'MX500', 1800.00, 2400.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'));
+
+-- Insertar registros en la tabla de discos duros
+INSERT INTO codisco_duro (id_componente, capacidad_alm) VALUES
+('HDD001', '1TB'),
+('HDD002', '500GB'),
+('HDD003', '1TB'),
+('HDD004', '2TB'),
+('HDD005', '1TB');
 
 -- Insertar componentes - Tarjetas de Video
-INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente, memoria, id_promocion) VALUES
-('GPU001', 'Tarjeta de Video Gaming', 'NVIDIA', 'GeForce RTX 3060', 6000.00, 8500.00, (SELECT id FROM cotipo_componente WHERE nombre = 'TARJETA_VIDEO'), '8GB', 3),
-('GPU002', 'Tarjeta de Video Profesional', 'AMD', 'Radeon RX 6700 XT', 7500.00, 10200.00, (SELECT id FROM cotipo_componente WHERE nombre = 'TARJETA_VIDEO'), '12GB', 1),
-('GPU003', 'Tarjeta de Video Básica', 'NVIDIA', 'GeForce GTX 1650', 3200.00, 4500.00, (SELECT id FROM cotipo_componente WHERE nombre = 'TARJETA_VIDEO'), '4GB', 3),
-('GPU004', 'Tarjeta de Video Alto Rendimiento', 'NVIDIA', 'GeForce RTX 3080', 12000.00, 16500.00, (SELECT id FROM cotipo_componente WHERE nombre = 'TARJETA_VIDEO'), '10GB', 1),
-('GPU005', 'Tarjeta de Video Mid-Range', 'AMD', 'Radeon RX 6600', 5800.00, 7900.00, (SELECT id FROM cotipo_componente WHERE nombre = 'TARJETA_VIDEO'), '8GB', 3);
+INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente) VALUES
+('GPU001', 'Tarjeta de Video Gaming', 'NVIDIA', 'GeForce RTX 3060', 6000.00, 8500.00, (SELECT id FROM cotipo_componente WHERE nombre = 'TARJETA_VIDEO')),
+('GPU002', 'Tarjeta de Video Profesional', 'AMD', 'Radeon RX 6700 XT', 7500.00, 10200.00, (SELECT id FROM cotipo_componente WHERE nombre = 'TARJETA_VIDEO')),
+('GPU003', 'Tarjeta de Video Básica', 'NVIDIA', 'GeForce GTX 1650', 3200.00, 4500.00, (SELECT id FROM cotipo_componente WHERE nombre = 'TARJETA_VIDEO')),
+('GPU004', 'Tarjeta de Video Alto Rendimiento', 'NVIDIA', 'GeForce RTX 3080', 12000.00, 16500.00, (SELECT id FROM cotipo_componente WHERE nombre = 'TARJETA_VIDEO')),
+('GPU005', 'Tarjeta de Video Mid-Range', 'AMD', 'Radeon RX 6600', 5800.00, 7900.00, (SELECT id FROM cotipo_componente WHERE nombre = 'TARJETA_VIDEO'));
+
+-- Insertar registros en la tabla de tarjetas de video
+INSERT INTO cotarjeta_video (id_componente, memoria) VALUES
+('GPU001', '8GB'),
+('GPU002', '12GB'),
+('GPU003', '4GB'),
+('GPU004', '10GB'),
+('GPU005', '8GB');
 
 -- Insertar componentes - PCs (ensamblados)
-INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente, id_promocion) VALUES
-('PC001', 'PC Gaming Alto Rendimiento', 'Custom Build', 'Gamer Pro X', 25000.00, 32000.00, (SELECT id FROM cotipo_componente WHERE nombre = 'PC'), 4),
-('PC002', 'PC Oficina Estándar', 'Custom Build', 'Office Elite', 12000.00, 15000.00, (SELECT id FROM cotipo_componente WHERE nombre = 'PC'), 1),
-('PC003', 'PC Diseño Profesional', 'Custom Build', 'Design Master', 28000.00, 35000.00, (SELECT id FROM cotipo_componente WHERE nombre = 'PC'), 4),
-('PC004', 'PC Workstation', 'Custom Build', 'Power Station', 32000.00, 42000.00, (SELECT id FROM cotipo_componente WHERE nombre = 'PC'), 1),
-('PC005', 'PC Gaming Económica', 'Custom Build', 'Game Start', 18000.00, 24000.00, (SELECT id FROM cotipo_componente WHERE nombre = 'PC'), 4);
+INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente) VALUES
+('PC001', 'PC Gaming Alto Rendimiento', 'Custom Build', 'Gamer Pro X', 25000.00, 32000.00, (SELECT id FROM cotipo_componente WHERE nombre = 'PC')),
+('PC002', 'PC Oficina Estándar', 'Custom Build', 'Office Elite', 12000.00, 15000.00, (SELECT id FROM cotipo_componente WHERE nombre = 'PC')),
+('PC003', 'PC Diseño Profesional', 'Custom Build', 'Design Master', 28000.00, 35000.00, (SELECT id FROM cotipo_componente WHERE nombre = 'PC')),
+('PC004', 'PC Workstation', 'Custom Build', 'Power Station', 32000.00, 42000.00, (SELECT id FROM cotipo_componente WHERE nombre = 'PC')),
+('PC005', 'PC Gaming Económica', 'Custom Build', 'Game Start', 18000.00, 24000.00, (SELECT id FROM cotipo_componente WHERE nombre = 'PC'));
 
 -- Insertar relaciones PC-Componentes
-INSERT INTO copc_parte (id_pc, id_componente) VALUES
+INSERT INTO copc_partes (id_pc, id_componente) VALUES
 -- PC001 - Gaming Alto Rendimiento
 ('PC001', 'HDD003'), -- NVMe SSD 1TB
 ('PC001', 'GPU004'), -- GeForce RTX 3080
@@ -152,17 +136,17 @@ INSERT INTO codetalle_cotizacion (cantidad, descripcion, folio, id_componente, n
 (1, 'Tarjeta de Video Profesional', 10, 'GPU002', 2, 10200.00);
 
 -- Insertar pedidos
-INSERT INTO copedido (fecha_emision, fecha_entrega, nivel_surtido, cve_proveedor, total) VALUES
-('2025-04-16', '2025-04-30', 1, 'TECH001', 34800.00),
-('2025-04-19', '2025-05-03', 2, 'COMP003', 17400.00),
-('2025-04-21', '2025-05-05', 0, 'HARD002', 40600.00),
-('2025-04-26', '2025-05-10', 1, 'MICR005', 48720.00),
-('2025-04-29', '2025-05-13', 2, 'GLOB004', 27840.00),
-('2025-05-03', '2025-05-17', 1, 'ELEC006', 13920.00),
-('2025-05-06', '2025-05-20', 0, 'PCWA007', 24360.00),
-('2025-05-09', '2025-05-23', 2, 'DIGI008', 10440.00),
-('2025-05-11', '2025-05-25', 1, 'TECH009', 19720.00),
-('2025-05-13', '2025-05-27', 0, 'HARD010', 16820.00);
+INSERT INTO copedido (fecha_emision, fecha_entrega, nivel_surtido, cve_proveedor) VALUES
+('2025-04-16', '2025-04-30', 1, 'TECH001'),
+('2025-04-19', '2025-05-03', 2, 'COMP003'),
+('2025-04-21', '2025-05-05', 0, 'HARD002'),
+('2025-04-26', '2025-05-10', 1, 'MICR005'),
+('2025-04-29', '2025-05-13', 2, 'GLOB004'),
+('2025-05-03', '2025-05-17', 1, 'ELEC006'),
+('2025-05-06', '2025-05-20', 0, 'PCWA007'),
+('2025-05-09', '2025-05-23', 2, 'DIGI008'),
+('2025-05-11', '2025-05-25', 1, 'TECH009'),
+('2025-05-13', '2025-05-27', 0, 'HARD010');
 
 -- Insertar detalles de pedido
 INSERT INTO codetalle_pedido (cantidad, id_componente, num_detalle, num_pedido, precio_unitario, total_cotizado) VALUES
