@@ -1,6 +1,8 @@
 package mx.com.qtx.cotizadorv1ds.persistencia.repositorios;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import mx.com.qtx.cotizadorv1ds.persistencia.entidades.Componente;
@@ -17,6 +19,21 @@ import java.math.BigDecimal;
  */
 @Repository
 public interface ComponenteRepositorio extends JpaRepository<Componente, String> {
+
+    @Query("""
+        SELECT c FROM Componente c
+            JOIN FETCH c.tipoComponente
+        WHERE c.id = :id                
+    """)
+    Componente findByIdWithTipoComponente(@Param("id") String id);
+
+    @Query("""
+        SELECT c FROM Componente c
+            JOIN FETCH c.tipoComponente
+            JOIN PcParte p ON c.id = p.idComponente 
+        WHERE p.idPc = :idPc                
+    """)
+    List<Componente> findComponentesByPcWithTipoComponente(@Param("idPc") String idPc);
     /**
      * Encuentra componentes por su tipo de componente.
      * <p>

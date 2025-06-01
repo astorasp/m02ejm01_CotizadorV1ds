@@ -1,9 +1,11 @@
 package mx.com.qtx.cotizadorv1ds.servicios.wrapper;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import mx.com.qtx.cotizadorv1ds.core.componentes.Componente;
 import mx.com.qtx.cotizadorv1ds.core.componentes.DiscoDuro;
+import mx.com.qtx.cotizadorv1ds.core.componentes.Monitor;
 import mx.com.qtx.cotizadorv1ds.core.componentes.PcBuilder;
 import mx.com.qtx.cotizadorv1ds.core.componentes.TarjetaVideo;
 import mx.com.qtx.cotizadorv1ds.core.componentes.TipoComponenteEnum;
@@ -74,7 +76,8 @@ public class ComponenteEntityConverter {
      * @return Objeto Componente del dominio correspondiente al tipo de la entidad, o null si el parámetro de entrada es null
      */
     public static Componente convertToComponente(
-            mx.com.qtx.cotizadorv1ds.persistencia.entidades.Componente compEntity) {
+            mx.com.qtx.cotizadorv1ds.persistencia.entidades.Componente compEntity,
+            List<mx.com.qtx.cotizadorv1ds.persistencia.entidades.Componente> subCompEntity) {
         
         if (compEntity == null) {
             return null;
@@ -92,18 +95,14 @@ public class ComponenteEntityConverter {
         if (compEntity.getTipoComponente().getNombre()
                 .equals(TipoComponenteEnum.DISCO_DURO.name())) {
             // Es un disco duro
-            mx.com.qtx.cotizadorv1ds.persistencia.entidades.DiscoDuro discoEntity = 
-                    (mx.com.qtx.cotizadorv1ds.persistencia.entidades.DiscoDuro) compEntity;
-            String capacidad = discoEntity.getCapacidadAlm();
+            String capacidad = compEntity.getCapacidadAlm();
             // Usar el método factory para crear el objeto
             return Componente.crearDiscoDuro(id, descripcion, marca, modelo, costo, precioBase, capacidad);
             
         } else if (compEntity.getTipoComponente().getNombre()
                 .equals(TipoComponenteEnum.TARJETA_VIDEO.name())) {
             // Es una tarjeta de video
-            mx.com.qtx.cotizadorv1ds.persistencia.entidades.TarjetaVideo tarjetaEntity = 
-                    (mx.com.qtx.cotizadorv1ds.persistencia.entidades.TarjetaVideo) compEntity;
-            String memoria = tarjetaEntity.getMemoria();
+            String memoria = compEntity.getMemoria();
             // Usar el método factory para crear el objeto
             return Componente
                 .crearTarjetaVideo(id, descripcion, marca, modelo, costo, precioBase, memoria);
@@ -119,10 +118,30 @@ public class ComponenteEntityConverter {
             pcBuilder.definirId(id)
                 .definirDescripcion(descripcion)
                 .definirMarcaYmodelo(marca, modelo);
+            if(subCompEntity != null) {
+                for(mx.com.qtx.cotizadorv1ds.persistencia.entidades.Componente subComp : subCompEntity) {
+                    Componente subCompCore = convertToComponente(subComp, null);
+                    switch(subCompCore.getCategoria()) {
+                        case "DiscoDuro" -> {
+                            DiscoDuro disco = (DiscoDuro) subCompCore;
+                            pcBuilder.agregarDisco(disco.getId(), disco.getDescripcion(), disco.getMarca(), 
+                                disco.getModelo(), disco.getCosto(), disco.getPrecioBase(), disco.getCapacidadAlm());
+                        }
+                        case "TarjetaVideo" -> {
+                            TarjetaVideo tarjeta = (TarjetaVideo) subCompCore;
+                            pcBuilder.agregarTarjetaVideo(tarjeta.getId(), tarjeta.getDescripcion(), tarjeta.getMarca(), 
+                                tarjeta.getModelo(), tarjeta.getCosto(), tarjeta.getPrecioBase(), tarjeta.getMemoria());
+                        }
+                        case "Monitor" -> {
+                            Monitor monitor = (Monitor) subCompCore;
+                            pcBuilder.agregarMonitor(monitor.getId(), monitor.getDescripcion(), monitor.getMarca(), 
+                                monitor.getModelo(), monitor.getCosto(), monitor.getPrecioBase());
+                        }
+                    }
+                }
+            }
             return pcBuilder.build();
         }
         
-        // Nota: La conversión para PC's compuestas requeriría implementación adicional
-        // para recuperar todos los componentes relacionados y crear una PC con ellos
     }
 }
