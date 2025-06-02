@@ -1,7 +1,9 @@
 package mx.com.qtx.cotizadorv1ds.persistencia.repositorios;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import mx.com.qtx.cotizadorv1ds.persistencia.entidades.Promocion;
+
 
 public interface PromocionRepositorio extends JpaRepository<Promocion, String> {
  

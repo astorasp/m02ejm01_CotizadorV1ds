@@ -90,6 +90,15 @@ public class ComponenteEntityConverter {
         String modelo = compEntity.getModelo();
         BigDecimal costo = compEntity.getCosto();
         BigDecimal precioBase = compEntity.getPrecioBase();
+        Componente componente = null;
+
+        /*
+        // Convertir la promoción de entidad a objeto de dominio
+        mx.com.qtx.cotizadorv1ds.promos.Promocion promocionDominio = null;
+        if (compEntity.getPromocion() != null) {
+            promocionDominio = PromocionEntityConverter.convertToPromocion(compEntity.getPromocion());
+        }
+         */
         
         // Determinar el tipo de componente y crear la instancia adecuada
         if (compEntity.getTipoComponente().getNombre()
@@ -97,21 +106,21 @@ public class ComponenteEntityConverter {
             // Es un disco duro
             String capacidad = compEntity.getCapacidadAlm();
             // Usar el método factory para crear el objeto
-            return Componente.crearDiscoDuro(id, descripcion, marca, modelo, costo, precioBase, capacidad);
+            componente = Componente.crearDiscoDuro(id, descripcion, marca, modelo, costo, precioBase, capacidad);
             
         } else if (compEntity.getTipoComponente().getNombre()
                 .equals(TipoComponenteEnum.TARJETA_VIDEO.name())) {
             // Es una tarjeta de video
             String memoria = compEntity.getMemoria();
             // Usar el método factory para crear el objeto
-            return Componente
+            componente = Componente
                 .crearTarjetaVideo(id, descripcion, marca, modelo, costo, precioBase, memoria);
             
         } else if (compEntity.getTipoComponente().getNombre()
                 .equals(TipoComponenteEnum.MONITOR.name())) {
             // Para otros tipos (Monitor o componentes genéricos)
             // Usar el método factory para crear un Monitor por defecto como tipo más simple
-            return Componente.crearMonitor(id, descripcion, marca, modelo, costo, precioBase);
+            componente = Componente.crearMonitor(id, descripcion, marca, modelo, costo, precioBase);
         }
         else {
             PcBuilder pcBuilder = Componente.getPcBuilder();
@@ -140,8 +149,18 @@ public class ComponenteEntityConverter {
                     }
                 }
             }
-            return pcBuilder.build();
+            componente = pcBuilder.build();
         }
+
+        if(componente != null) {
+            mx.com.qtx.cotizadorv1ds.promos.Promocion promocionDominio = null;
+            if (compEntity.getPromocion() != null) {
+                promocionDominio = PromocionEntityConverter.convertToPromocion(compEntity.getPromocion());
+            }
+            componente.setPromo(promocionDominio);
+        }
+
+        return componente;
         
     }
 }

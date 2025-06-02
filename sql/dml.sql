@@ -22,8 +22,7 @@ INSERT INTO copromocion (id_promocion, descripcion, nombre, vigencia_desde, vige
 (1, 'Sin promoción', 'Regular', '2025-01-01', '2030-12-31'),
 (2, 'Descuento por cantidad en monitores', 'Monitores por Volumen', '2025-03-01', '2025-05-31'),
 (3, 'Promoción compra 3 paga 2 en tarjetas de video', 'Tarjetas 3x2', '2025-04-01', '2025-04-30'),
-(4, 'Descuento del 20% en componentes para PC', 'PC Componentes', '2025-05-01', '2025-07-31'),
-(5, 'Promoción compra 3 paga 2 en discos duros', 'HDD 3x2', '2025-06-01', '2025-06-30');
+(4, 'Descuento del 20% en componentes para PC', 'PC Componentes', '2025-05-01', '2025-07-31');
 
 -- Insertar detalles de promoción
 INSERT INTO codetalle_promocion (id_detalle_promocion, es_base, llevent, nombre, paguen, porc_dcto_plano, tipo_prom_acumulable, tipo_prom_base, id_promocion) VALUES
@@ -37,10 +36,7 @@ INSERT INTO codetalle_promocion (id_detalle_promocion, es_base, llevent, nombre,
 (3, TRUE, 3, 'Compra 3 Paga 2 - Tarjetas', 2, 33.33, NULL, 'BASE', 3),
 
 -- Promoción PC Componentes (descuento general)
-(4, TRUE, 1, 'Descuento en PC Componentes', 1, 20.00, NULL, 'BASE', 4),
-
--- Promoción HDD 3x2 (compra N lleva M)
-(5, TRUE, 3, 'Compra 3 Paga 2 - Discos', 2, 33.33, NULL, 'BASE', 5);
+(4, TRUE, 1, 'Descuento en PC Componentes', 1, 20.00, NULL, 'BASE', 4);
 
 -- Insertar detalles de promoción por documento y cantidad
 INSERT INTO codetalle_prom_dscto_x_cant (num_dscto, cantidad, dscto, num_det_promocion, num_promocion) VALUES
@@ -58,11 +54,11 @@ INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, prec
 
 -- Insertar componentes - Discos Duros
 INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente, capacidad_alm, id_promocion) VALUES
-('HDD001', 'Disco Duro 1TB SATA', 'Western Digital', 'WD10EZEX', 850.00, 1200.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '1TB', 5),
+('HDD001', 'Disco Duro 1TB SATA', 'Western Digital', 'WD10EZEX', 850.00, 1200.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '1TB', 1),
 ('HDD002', 'SSD 500GB SATA', 'Samsung', 'EVO860', 1200.00, 1800.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '500GB', 1),
-('HDD003', 'NVMe SSD 1TB', 'Kingston', 'KC2500', 2300.00, 3100.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '1TB', 5),
+('HDD003', 'NVMe SSD 1TB', 'Kingston', 'KC2500', 2300.00, 3100.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '1TB', 1),
 ('HDD004', 'Disco Duro 2TB SATA', 'Seagate', 'Barracuda', 1100.00, 1600.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '2TB', 1),
-('HDD005', 'SSD 1TB SATA', 'Crucial', 'MX500', 1800.00, 2400.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '1TB', 5);
+('HDD005', 'SSD 1TB SATA', 'Crucial', 'MX500', 1800.00, 2400.00, (SELECT id FROM cotipo_componente WHERE nombre = 'DISCO_DURO'), '1TB', 1);
 
 -- Insertar componentes - Tarjetas de Video
 INSERT INTO cocomponente (id_componente, descripcion, marca, modelo, costo, precio_base, id_tipo_componente, memoria, id_promocion) VALUES

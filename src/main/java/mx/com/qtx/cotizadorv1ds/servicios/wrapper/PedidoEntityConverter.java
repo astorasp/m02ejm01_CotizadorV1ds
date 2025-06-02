@@ -71,6 +71,7 @@ public class PedidoEntityConverter {
                 proveedorRepo.findByCve(claveProveedor)
             );
         }
+        pedidoEntity.setTotal(pedidoCore.getTotalPedido());
         
         return pedidoEntity;
     }
