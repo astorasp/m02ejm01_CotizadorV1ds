@@ -8,6 +8,6 @@ import mx.com.qtx.cotizadorv1ds.impuestos.CalculadorImpuesto;
 public interface ICotizador {
     void agregarComponente(int cantidad, Componente componente);
     void eliminarComponente(String idComponente) throws ComponenteInvalidoException;
-    Cotizacion generarCotizacion(List<CalculadorImpuesto> CalculadorImpuesto);
+    Cotizacion generarCotizacion(List<CalculadorImpuesto> calculadorImpuesto);
     void listarComponentes();
 }
